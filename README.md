@@ -5,7 +5,7 @@ My portfolio, drawn in pencil. Well, drawn in code that pretends to be a pencil.
 **Live:** [thomas-portfolio-ruby.vercel.app](https://thomas-portfolio-ruby.vercel.app)
 
 <p align="center">
-  <img src="docs/media/hero.gif" alt="A pencil writes 'Thomas Nguyen', then Thomas and his band of agent doodles draw themselves in and start playing" width="100%" />
+  <img src="docs/media/hero.webp" alt="A pencil writes 'Thomas Nguyen', then Thomas and his band of agent doodles draw themselves in and start playing" width="100%" />
 </p>
 
 A pencil writes my name, then I conduct my band (Clawd, Muse, Codex, Grok and OpenClaw) while they play drums, cello, keytar, trumpet and guitar. Click me to change the tempo, hover one of them for a solo.
@@ -13,10 +13,16 @@ A pencil writes my name, then I conduct my band (Clawd, Muse, Codex, Grok and Op
 ## The whole thing, scrolled
 
 <p align="center">
-  <img src="docs/media/tour.gif" alt="Scrolling through the site: the pencil-drawn project timeline, job cards with hand-drawn circles, the skills mind map, sticky notes, the Claude Code terminal session and the paper plane contact" width="100%" />
+  <img src="docs/media/tour.webp" alt="Scrolling through the site: the pencil-drawn project timeline, job cards with hand-drawn circles, the skills mind map, sticky notes, the Claude Code terminal session and the paper plane contact" width="100%" />
 </p>
 
 <sub>Sped up 1.7×. [Full-speed recording (mp4)](docs/media/demo.mp4).</sub>
+
+## The Claude Code bit, at full speed
+
+<p align="center">
+  <img src="docs/media/terminal.webp" alt="A pinned Claude Code terminal plays a session as you scroll: plan mode, auto mode, a skill loading, MCP servers lighting up, the context window filling and auto-compacting, and the usage limit running out" width="100%" />
+</p>
 
 | | |
 | --- | --- |

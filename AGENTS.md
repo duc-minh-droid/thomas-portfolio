@@ -28,9 +28,10 @@ Astro 7 (static) + Tailwind v4 + GSAP/ScrollTrigger + Rough.js + rough-notation 
 
 ## Repo & README media
 - GitHub: https://github.com/duc-minh-droid/thomas-portfolio (public). README media lives in `docs/media/`.
-- Re-record: Playwright `browser.newContext({ viewport: 1280×800, recordVideo })`. Chrome's screencast delivers
-  ~540px-wide frames padded into the canvas, so crop the webm to the content (e.g. `crop=534:334:0:0`) before encoding.
-  ffmpeg comes from `imageio-ffmpeg` in a throwaway venv (not installed globally). Keep README GIFs under ~8MB.
+- Re-record: don't use Playwright `recordVideo` (Chrome's screencast only delivers ~540px frames). Instead drive the
+  walkthrough while a parallel loop saves `page.screenshot()` JPEGs at 1280×800 (~17fps), then encode with ffmpeg
+  (`-framerate 16.8`). Use animated WebP (`libwebp_anim`) for README clips: GIFs of scrolling paper grain are 5–10×
+  bigger. ffmpeg comes from `imageio-ffmpeg` in a throwaway venv (not installed globally).
 
 ## Rules
 - Only `public/Thomas_Nguyen_CV.pdf` (phone redacted) is published. Root `Profile.pdf` / `Thomas_Nguyen_CV.pdf`
