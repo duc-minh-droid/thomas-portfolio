@@ -1,0 +1,55 @@
+---
+import { buildParts, type Acc, type CharId, type Expr } from "../lib/characters";
+import { sketchParts, seedOf } from "../lib/sketch";
+
+interface Props {
+  id: CharId;
+  /** body + outfit only, no instrument */
+  mini?: boolean;
+  expr?: Expr;
+  acc?: Acc[];
+  size?: number | string;
+  boil?: boolean;
+  draw?: boolean;
+  speed?: number;
+  rotate?: number;
+  class?: string;
+  style?: string;
+  label?: string;
+  [key: `data-${string}`]: unknown;
+}
+
+const { id, mini = false, expr, acc, size = 120, boil = true, draw = false, speed, rotate = 0, class: cls = "", style = "", label, ...rest } = Astro.props;
+const parts = buildParts(id, { mini, expr, acc });
+const base = seedOf(`char-${id}-${mini}-${expr ?? ""}-${(acc ?? []).join(",")}`);
+const frames = (boil ? [0, 1, 2] : [0]).map((f) => sketchParts(parts, { seed: base + f * 131, strokeWidth: 2.2, roughness: 1.15 }));
+const dims = typeof size === "number" ? `width:${size}px;height:${size}px;` : `width:${size};height:auto;aspect-ratio:1;`;
+---
+
+<svg
+  class:list={["doodle", "character", `ch-${id}`, { boil, mini }, cls]}
+  viewBox="0 0 120 120"
+  style={`${dims}${rotate ? `rotate:${rotate}deg;` : ""}${style}`}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+  data-draw={draw ? "" : undefined}
+  data-speed={speed}
+  {...rest}
+>
+  {
+    frames.map((paths) => (
+      <g class="frame">
+        {paths.map((p) => (
+          <path
+            d={p.d}
+            style={`stroke:${p.stroke};${p.fill ? `fill:${p.fill};` : ""}`}
+            stroke-width={p.width || undefined}
+            class={p.cls}
+            pathLength="1"
+          />
+        ))}
+      </g>
+    ))
+  }
+</svg>

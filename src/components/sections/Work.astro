@@ -1,0 +1,312 @@
+---
+import Doodle from "../Doodle.astro";
+import SketchBox from "../SketchBox.astro";
+import SectionTitle from "../SectionTitle.astro";
+import projectsRaw from "../../content/projects.json";
+import Character from "../Character.astro";
+import { projectDoodles, projectNotes } from "../../content/portfolio";
+import type { Acc, CharId, Expr } from "../../lib/characters";
+
+// band members peeking over a few cards, dressed for the project
+const peekers: Record<string, { id: CharId; expr: Expr; acc: Acc[] }> = {
+  "hollow-hand": { id: "muse", expr: "love", acc: ["flower"] },
+  jevis: { id: "openclaw", expr: "happy", acc: ["headset"] },
+  leetgraph: { id: "clawd", expr: "grin", acc: ["flag"] },
+  boogle: { id: "grok", expr: "surprised", acc: ["magnifier"] },
+  stuff3d: { id: "codex", expr: "determined", acc: ["hardhat", "wrench"] },
+  OrderBook: { id: "muse", expr: "cool", acc: ["coffee"] },
+};
+
+type Project = {
+  repo: string;
+  title: string;
+  blurb: string;
+  tags: string[];
+  created: string;
+  url: string;
+  live: string | null;
+  hidden?: boolean;
+  media: { kind: string; video?: string; gif?: string; poster?: string; alt: string };
+};
+
+const projects = (projectsRaw as Project[]).filter((p) => !p.hidden);
+const now = Date.now();
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const month = (iso: string) => {
+  const d = new Date(iso);
+  return `${MONTHS[d.getUTCMonth()]} '${String(d.getUTCFullYear()).slice(2)}`;
+};
+const palette = ["var(--coral)", "var(--teal)", "var(--blue)", "var(--purple)", "var(--mustard)"];
+---
+
+<section id="work" class="work" aria-labelledby="work-title">
+  <div class="wrap">
+    <SectionTitle
+      id="work"
+      page={2}
+      kicker="projects · straight from my GitHub"
+      title="Stuff I've built"
+      note={`${projects.length} projects, newest first. Every one has a demo or a recording, so go click things ↓`}
+      doodle="rocket"
+    />
+
+    <div class="timeline" data-timeline>
+      <svg class="spine" aria-hidden="true"><path class="spine-ghost" /><path class="spine-ink" /><path class="spine-ink-2" /></svg>
+      <div class="spine-pencil" aria-hidden="true">
+        <Doodle name="pencil" size={64} sw={3} fill="var(--mustard)" boil={false} seed="spine-pencil" rotate={-45} />
+      </div>
+
+      <ol class="items">
+        {
+          projects.map((p, i) => {
+            const side = i % 2 === 0 ? "left" : "right";
+            const fresh = now - new Date(p.created).getTime() < 8 * 864e5;
+            const color = palette[i % palette.length];
+            const rot = ((i * 37) % 5) - 2;
+            const media = p.media;
+            return (
+              <li class={`item ${side}`} style={`--accent:${color}`} data-item>
+                <span class="spine-stamp" style={`--r:${rot * 3 - 4}deg`}>
+                  <span class="stamp font-mono" style={`--stamp:${color}`}>{month(p.created)}</span>
+                </span>
+
+                <article class="index-card card" style={`rotate:${rot * 0.6}deg`} data-card>
+                  <span class="tape" style={`top:-15px;left:${side === "left" ? 18 : 62}%;rotate:${rot * 2}deg`} />
+                  {peekers[p.repo] && (
+                    <span class={`peeker ${side === "left" ? "at-right" : "at-left"}`} aria-hidden="true">
+                      <Character {...peekers[p.repo]} mini size="100%" />
+                    </span>
+                  )}
+                  <div class="media sketch-host">
+                    {media.kind === "video" ? (
+                      <video
+                        data-src={media.video}
+                        poster={media.poster}
+                        muted
+                        loop
+                        playsinline
+                        preload="none"
+                        aria-label={media.alt}
+                      />
+                    ) : media.kind === "gif" ? (
+                      <img data-src={media.gif} src={media.poster} alt={media.alt} loading="lazy" decoding="async" />
+                    ) : media.poster ? (
+                      <img src={media.poster} alt={media.alt} loading="lazy" decoding="async" class="contain" />
+                    ) : null}
+                    {media.kind === "video" && !media.poster && (
+                      <span class="media-placeholder">
+                        <Doodle name={projectDoodles[p.repo] ?? "star"} size={70} fill={color} seed={`${p.repo}-ph`} />
+                      </span>
+                    )}
+                    <SketchBox seed={`${p.repo}-frame`} sw={1.8} />
+                    {(media.kind === "video" || media.kind === "gif") && <span class="rec font-mono">● rec</span>}
+                  </div>
+
+                  <div class="body">
+                    <h3 class="title font-hand">
+                      {p.title}
+                      {fresh && <span class="fresh font-hand">fresh ink!</span>}
+                    </h3>
+                    <p class="blurb">{p.blurb}</p>
+                    <ul class="tags" aria-label="Tech">
+                      {p.tags.slice(0, 4).map((t) => (
+                        <li class="tag-pill sketch-host">
+                          {t}
+                          <SketchBox seed={`${p.repo}-${t}`} sw={1} roughness={1.4} stroke="var(--pencil)" />
+                        </li>
+                      ))}
+                    </ul>
+                    <div class="links">
+                      {p.live && (
+                        <a class="btn-sketch solid" href={p.live} target="_blank" rel="noopener">
+                          try it live ↗
+                        </a>
+                      )}
+                      <a class="btn-sketch sketch-host" href={p.url} target="_blank" rel="noopener">
+                        code ↗
+                        <SketchBox seed={`${p.repo}-code`} />
+                      </a>
+                    </div>
+                  </div>
+                </article>
+
+                <div class="aside" aria-hidden="true">
+                  <Doodle
+                    name={projectDoodles[p.repo] ?? "star"}
+                    size={120}
+                    fill={color}
+                    sw={2.4}
+                    draw
+                    speed={0.12 + (i % 3) * 0.08}
+                    seed={`${p.repo}-aside`}
+                    rotate={rot * 4}
+                  />
+                  {projectNotes[p.repo] && <span class="aside-note font-hand">{projectNotes[p.repo]}</span>}
+                </div>
+              </li>
+            );
+          })
+        }
+      </ol>
+
+      <p class="timeline-end font-hand" data-reveal>
+        <Character id="openclaw" mini expr="sleepy" acc={["zzz"]} size={64} />
+        <span>more on <a href="https://github.com/duc-minh-droid" target="_blank" rel="noopener">github</a>, and more on the way</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .work { position: relative; padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 8vw, 6rem); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(1.25rem, 6vw, 5rem) 0 clamp(1.25rem, 10vw, 8.5rem); }
+
+  .timeline { position: relative; }
+  .spine {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .spine path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .spine-ghost { stroke: rgb(87 82 76 / 0.16); stroke-width: 2; stroke-dasharray: 2 9; }
+  .spine-ink { stroke: var(--ink); stroke-width: 2.6; }
+  .spine-ink-2 { stroke: var(--ink); stroke-width: 1.1; opacity: 0.55; }
+  .spine-pencil {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 6;
+    pointer-events: none;
+    will-change: transform;
+    filter: drop-shadow(4px 6px 0 rgb(0 0 0 / 0.1));
+  }
+
+  .items { list-style: none; margin: 0; padding: 0; }
+  .item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(3rem, 8vw, 7rem);
+    align-items: center;
+  }
+  .item + .item { margin-top: clamp(-7rem, -6vw, -2rem); }
+  .item.left .card { grid-column: 1; }
+  .item.left .aside { grid-column: 2; grid-row: 1; }
+  .item.right .card { grid-column: 2; }
+  .item.right .aside { grid-column: 1; grid-row: 1; justify-self: end; text-align: right; }
+  .item.right .aside { flex-direction: row-reverse; }
+
+  .spine-stamp {
+    position: absolute;
+    left: 50%;
+    top: 2.2rem;
+    z-index: 4;
+    padding: 4px;
+    font-size: 0.8rem;
+    background: var(--paper);
+    border-radius: 9px;
+    white-space: nowrap;
+    transform: translate(-50%, 0) rotate(var(--r, -8deg));
+  }
+
+  .card {
+    padding: 1rem 1rem 1.2rem;
+    margin: 2.2rem 0 3rem;
+    border-radius: 3px;
+    will-change: transform;
+  }
+  .peeker { position: absolute; top: -58px; width: 70px; z-index: 6; }
+  .peeker.at-right { right: 1.2rem; rotate: 6deg; }
+  .peeker.at-left { left: 1.2rem; rotate: -6deg; }
+  .media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: #efe8da;
+    overflow: visible;
+  }
+  .media video, .media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    background: #efe8da;
+  }
+  .media img.contain { object-fit: contain; object-position: center; padding: 0.6rem; }
+  .media-placeholder { position: absolute; inset: 0; display: grid; place-items: center; }
+  .rec {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    z-index: 3;
+    padding: 0.05rem 0.4rem;
+    font-size: 0.65rem;
+    color: #fff;
+    background: rgb(37 34 31 / 0.72);
+    border-radius: 4px;
+  }
+  .rec::first-letter { color: #ff5a4a; }
+  .motion .rec { animation: rec 1.2s steps(2) infinite; }
+  @keyframes rec { 50% { opacity: 0.55; } }
+
+  .body { padding: 0.9rem 0.3rem 0; }
+  .title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.7rem;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .fresh {
+    font-size: 1.15rem;
+    padding: 0.05rem 0.5rem;
+    color: #fff;
+    background: var(--accent);
+    rotate: -4deg;
+    border-radius: 3px 8px 4px 9px;
+  }
+  .blurb {
+    margin-top: 0.55rem;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--graphite);
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.85rem 0 0; padding: 0; list-style: none; }
+  .links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1rem; }
+  .links .btn-sketch { font-size: 1.3rem; }
+  .links .btn-sketch.solid::before { background: var(--accent); }
+
+  .aside { display: flex; align-items: center; gap: 1rem; }
+  .aside-note { font-size: 1.6rem; color: var(--graphite); rotate: -5deg; }
+
+  .timeline-end {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding-top: 2rem;
+    font-size: 1.7rem;
+    color: var(--graphite);
+    background: var(--paper);
+    width: fit-content;
+    margin: 0 auto;
+  }
+  .timeline-end a { color: var(--ink); text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--coral); }
+
+  @media (max-width: 860px) {
+    .item { grid-template-columns: 1fr; padding-left: 2.6rem; }
+    .item + .item { margin-top: 0; }
+    .item .card, .item.right .card { grid-column: 1; }
+    .aside { display: none; }
+    .spine-stamp { --tx: 0px; left: 0.2rem; transform: translate(0, 0) rotate(var(--r)); top: 0.6rem; font-size: 0.68rem; }
+    .card { margin-top: 3rem; }
+  }
+</style>

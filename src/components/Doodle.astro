@@ -1,0 +1,79 @@
+---
+import { sketchDoodle, seedOf } from "../lib/sketch";
+
+interface Props {
+  name: string;
+  size?: number | string;
+  stroke?: string;
+  fill?: string;
+  sw?: number;
+  roughness?: number;
+  seed?: string | number;
+  /** 3-frame line boil (hand-animated tremble) */
+  boil?: boolean;
+  /** ink the strokes in when scrolled into view */
+  draw?: boolean;
+  /** parallax speed for scroll (e.g. 0.2) */
+  speed?: number;
+  /** mouse-parallax depth in the hero */
+  depth?: number;
+  rotate?: number;
+  /** stretch to the box (underlines): non-uniform scale, non-scaling strokes */
+  stretch?: boolean;
+  class?: string;
+  style?: string;
+  label?: string;
+  [key: `data-${string}`]: unknown;
+}
+
+const {
+  name,
+  size = 64,
+  stroke = "var(--ink)",
+  fill,
+  sw = 2.2,
+  roughness = 1.2,
+  seed = name,
+  boil = true,
+  draw = false,
+  speed,
+  depth,
+  rotate = 0,
+  stretch = false,
+  class: cls = "",
+  style = "",
+  label,
+  ...rest
+} = Astro.props;
+
+const base = typeof seed === "number" ? seed : seedOf(String(seed));
+const frames = (boil ? [0, 1, 2] : [0]).map((f) =>
+  sketchDoodle(name, { seed: base + f * 101, stroke, fill, strokeWidth: sw, roughness }),
+);
+const dims = typeof size === "number" ? `width:${size}px;height:${size}px;` : `width:${size};height:auto;aspect-ratio:1;`;
+---
+
+<svg
+  class:list={["doodle", { boil, stretch }, cls]}
+  viewBox="-6 -6 112 112"
+  preserveAspectRatio={stretch ? "none" : undefined}
+  style={`${dims}${rotate ? `rotate:${rotate}deg;` : ""}${style}`}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+  data-draw={draw ? "" : undefined}
+  data-speed={speed}
+  data-depth={depth}
+  data-doodle={name}
+  {...rest}
+>
+  {
+    frames.map((paths) => (
+      <g class="frame">
+        {paths.map((p) => (
+          <path d={p.d} style={`stroke:${p.stroke};${p.fill ? `fill:${p.fill};` : ""}`} stroke-width={p.width || undefined} class={p.cls} pathLength="1" />
+        ))}
+      </g>
+    ))
+  }
+</svg>

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.playwright-mcp/
+.env*
+/Profile.pdf
+/Thomas_Nguyen_CV.pdf
+
+.vercel

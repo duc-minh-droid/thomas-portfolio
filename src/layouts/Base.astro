@@ -1,0 +1,68 @@
+---
+import "../styles/global.css";
+import { profile } from "../content/portfolio";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = `${profile.name} · ${profile.role}`,
+  description = `${profile.name}, ${profile.role} in ${profile.location}. ${profile.tagline}`,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f1e7" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@thomas_devmd" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=JetBrains+Mono:wght@400;700;800&family=Nunito:ital,wght@0,400..800;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        // the page opens with the name being written; start at the top unless a #section was asked for
+        if ("scrollRestoration" in history && !location.hash) history.scrollRestoration = "manual";
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("motion");
+        if (matchMedia("(hover: hover) and (pointer: fine)").matches) d.classList.add("pencil-cursor");
+        // safety net: never leave content hidden if the animation bundle fails to boot
+        setTimeout(function () { if (!d.classList.contains("booted")) d.classList.remove("motion"); }, 4000);
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#work">Skip to projects</a>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="pencil-edge" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" />
+        </filter>
+      </defs>
+    </svg>
+
+    <div class="page relative">
+      <div class="notebook-edge" aria-hidden="true"></div>
+      <slot />
+    </div>
+
+    <script>
+      import "../scripts/main";
+    </script>
+  </body>
+</html>

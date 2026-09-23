@@ -1,0 +1,291 @@
+[
+  {
+    "repo": "neurocraft",
+    "title": "NeuroCraft",
+    "blurb": "Type 'a castle on that hill' and a castle shows up on the hill. You describe a 3D world and it builds it.",
+    "tags": [
+      "TypeScript",
+      "JavaScript",
+      "3d",
+      "ai",
+      "generative-ai"
+    ],
+    "created": "2026-09-23T18:46:47Z",
+    "pushed": "2026-09-23T18:46:56Z",
+    "url": "https://github.com/duc-minh-droid/neurocraft",
+    "live": null,
+    "media": {
+      "kind": "video",
+      "video": "/projects/neurocraft/demo.mp4",
+      "alt": "Typing 'a castle on that hill in the distance' makes a castle appear; then a dragon circles it; then the world turns to golden sunset"
+    }
+  },
+  {
+    "repo": "hollow-hand",
+    "title": "Hollow Hand",
+    "blurb": "A tarot deckbuilder where you play against Jev, a masked dealer who learns how you play and starts writing new rules to beat you.",
+    "tags": [
+      "TypeScript",
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2026-09-23T06:13:49Z",
+    "pushed": "2026-09-23T06:33:36Z",
+    "url": "https://github.com/duc-minh-droid/hollow-hand",
+    "live": "https://hollow-hand.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/hollow-hand/demo.mp4",
+      "poster": "/projects/hollow-hand/poster.jpg",
+      "alt": "Gameplay: map, a full hand against The Fool, Jev's turn, the mask breaking"
+    }
+  },
+  {
+    "repo": "jevbrowser",
+    "title": "jevbrowser",
+    "blurb": "A Chrome side panel that fills in job applications for me in my own logged-in browser. No screenshots, no vision model, and it always stops before hitting submit.",
+    "tags": [
+      "TypeScript",
+      "JavaScript",
+      "ai-agent",
+      "browser-automation",
+      "chrome-extension"
+    ],
+    "created": "2026-09-22T13:53:25Z",
+    "pushed": "2026-09-22T13:53:56Z",
+    "url": "https://github.com/duc-minh-droid/jevbrowser",
+    "live": null,
+    "media": {
+      "kind": "image",
+      "poster": "/projects/jevbrowser/poster.png",
+      "alt": "A live Greenhouse application form with name, email, phone, location, pronouns, right-to-work and six demographic questions all filled in"
+    }
+  },
+  {
+    "repo": "jevis",
+    "title": "jevis",
+    "blurb": "A voice assistant for Windows that reads the UI tree instead of squinting at pixels. My everyday commands never touch a model.",
+    "tags": [
+      "Python"
+    ],
+    "created": "2026-09-22T13:45:13Z",
+    "pushed": "2026-09-22T13:45:17Z",
+    "url": "https://github.com/duc-minh-droid/jevis",
+    "live": null,
+    "media": {
+      "kind": "image",
+      "poster": "/projects/jevis/poster.png",
+      "alt": "the jevis command bar"
+    }
+  },
+  {
+    "repo": "backlot",
+    "title": "Backlot",
+    "blurb": "Local image gen with a recurring cast and a guided camera, so the same characters show up shot after shot. Runs Qwen-Image-2.1 on an 8GB GPU.",
+    "tags": [
+      "TypeScript",
+      "Python"
+    ],
+    "created": "2026-09-22T10:06:11Z",
+    "pushed": "2026-09-22T10:06:16Z",
+    "url": "https://github.com/duc-minh-droid/backlot",
+    "live": null,
+    "media": {
+      "kind": "image",
+      "poster": "/projects/backlot/poster.png",
+      "alt": "Backlot generating a shot"
+    }
+  },
+  {
+    "repo": "leetgraph",
+    "title": "LeetGraph",
+    "blurb": "LeetCode, but it's a roguelike. Pick a company, climb a map of its real interview questions, and let the game guilt you into coming back.",
+    "tags": [
+      "JavaScript",
+      "TypeScript",
+      "Python"
+    ],
+    "created": "2026-08-28T17:39:17Z",
+    "pushed": "2026-09-23T08:20:43Z",
+    "url": "https://github.com/duc-minh-droid/leetgraph",
+    "live": "https://leetgraph-iota.vercel.app",
+    "media": {
+      "kind": "gif",
+      "gif": "/projects/leetgraph/demo.gif",
+      "poster": "/projects/leetgraph/poster.png",
+      "alt": "Solving a node: confetti, rating tick, new paths unlock"
+    }
+  },
+  {
+    "repo": "dogin",
+    "title": "dogin",
+    "blurb": "Password login built by hand in Rust (Axum, SQLite, Argon2, session cookies), with a live inspector that shows what the server did on every request.",
+    "tags": [
+      "Rust",
+      "JavaScript"
+    ],
+    "created": "2026-08-08T11:39:41Z",
+    "pushed": "2026-09-23T18:35:26Z",
+    "url": "https://github.com/duc-minh-droid/dogin",
+    "live": null,
+    "media": {
+      "kind": "video",
+      "video": "/projects/dogin/demo.mp4",
+      "poster": "/projects/dogin/poster.png",
+      "alt": "demo"
+    }
+  },
+  {
+    "repo": "boogle",
+    "title": "boogle",
+    "blurb": "My own tiny search engine in Rust. Stemming, TF-IDF ranking, and a UI that shows its maths for every result.",
+    "tags": [
+      "Rust",
+      "JavaScript"
+    ],
+    "created": "2026-08-07T06:10:39Z",
+    "pushed": "2026-09-23T18:45:00Z",
+    "url": "https://github.com/duc-minh-droid/boogle",
+    "live": "https://boogle-lovat.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/boogle/demo.mp4",
+      "poster": "/projects/boogle/poster.png",
+      "alt": "Boogle demo: searching and opening the explain panel"
+    }
+  },
+  {
+    "repo": "discorb",
+    "title": "Discorb",
+    "blurb": "A mini Discord in Rust. Tokio, WebSockets, one broadcast channel per room, and the same binary serves the web client.",
+    "tags": [
+      "JavaScript",
+      "Rust"
+    ],
+    "created": "2026-08-06T07:00:14Z",
+    "pushed": "2026-09-23T18:35:40Z",
+    "url": "https://github.com/duc-minh-droid/discorb",
+    "live": null,
+    "media": {
+      "kind": "video",
+      "video": "/projects/discorb/demo.mp4",
+      "poster": "/projects/discorb/poster.png",
+      "alt": "Three users chatting in real time, switching rooms and surviving a server restart"
+    }
+  },
+  {
+    "repo": "zippy",
+    "title": "zippy",
+    "blurb": "A Huffman compressor in Rust, plus a visualizer that replays every step so you can watch 'abracadabra' turn into bits.",
+    "tags": [
+      "JavaScript",
+      "Rust"
+    ],
+    "created": "2026-08-01T21:42:01Z",
+    "pushed": "2026-09-23T18:45:04Z",
+    "url": "https://github.com/duc-minh-droid/zippy",
+    "live": "https://zippy-mocha.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/zippy/demo.mp4",
+      "alt": "zippy visualizer: counting bytes, merging the priority queue into a tree, reading codes and emitting bits"
+    }
+  },
+  {
+    "repo": "stuff3d",
+    "title": "Stuff3D",
+    "blurb": "A 3D wireframe renderer in about 300 lines of C++. SFML opens the window and draws lines. The rotation, camera, clipping and perspective maths is all mine.",
+    "tags": [
+      "C++",
+      "JavaScript"
+    ],
+    "created": "2026-06-27T11:26:17Z",
+    "pushed": "2026-09-23T18:45:08Z",
+    "url": "https://github.com/duc-minh-droid/stuff3d",
+    "live": "https://stuff3d.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/stuff3d/demo.mp4",
+      "poster": "/projects/stuff3d/poster.png",
+      "alt": "Stuff3D running: walking around and through the penguin model"
+    }
+  },
+  {
+    "repo": "MLFQScheduler",
+    "title": "MLFQ Scheduler",
+    "blurb": "A C++ sim of a multi-level feedback queue CPU scheduler, with a visualizer that replays it tick by tick.",
+    "tags": [
+      "JavaScript",
+      "C++"
+    ],
+    "created": "2026-01-25T13:28:01Z",
+    "pushed": "2026-09-23T18:45:11Z",
+    "url": "https://github.com/duc-minh-droid/MLFQScheduler",
+    "live": "https://mlfq-scheduler.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/MLFQScheduler/demo.mp4",
+      "poster": "/projects/MLFQScheduler/poster.png",
+      "alt": "Demo: the visualizer playing a trace"
+    }
+  },
+  {
+    "repo": "MemoryManagement",
+    "title": "Memory Management",
+    "blurb": "Three C++ allocators for game objects (a bump arena, a fixed-slot pool and a ref-counted world with generation-checked handles), plus a page that replays a real run byte by byte.",
+    "tags": [
+      "JavaScript",
+      "C++"
+    ],
+    "created": "2026-01-16T17:25:42Z",
+    "pushed": "2026-09-23T18:45:15Z",
+    "url": "https://github.com/duc-minh-droid/MemoryManagement",
+    "live": "https://memory-management-phi.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/MemoryManagement/demo.mp4",
+      "poster": "/projects/MemoryManagement/poster.png",
+      "alt": "Visualizer replaying a trace: arena bump pointer, pool free stack, world handles and the dungeon view"
+    }
+  },
+  {
+    "repo": "OrderBook",
+    "title": "OrderBook",
+    "blurb": "A limit order book and matching engine in C++17 with price-time priority, market orders, cancels, modifies and GTC/IOC/FOK. Every fill gets recorded so you can replay it in the browser.",
+    "tags": [
+      "C++",
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2025-12-20T13:28:42Z",
+    "pushed": "2026-09-23T18:45:18Z",
+    "url": "https://github.com/duc-minh-droid/OrderBook",
+    "live": "https://orderbook-six-liart.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/OrderBook/demo.mp4",
+      "poster": "/projects/OrderBook/poster.png",
+      "alt": "Replaying a trace: orders queue at a level, fill FIFO, sweep the book"
+    }
+  },
+  {
+    "repo": "JsonParser",
+    "title": "JsonParser",
+    "blurb": "A recursive-descent JSON parser in C++17. It tells you the exact line and column you broke, and records every step so you can watch it parse.",
+    "tags": [
+      "C++",
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2025-12-12T09:20:02Z",
+    "pushed": "2026-09-23T18:45:21Z",
+    "url": "https://github.com/duc-minh-droid/JsonParser",
+    "live": "https://jsonparser-pink.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/JsonParser/demo.mp4",
+      "poster": "/projects/JsonParser/poster.png",
+      "alt": "Visualizer replaying a parse: source cursor on the left, call stack in the middle, JsonValue tree on the right"
+    }
+  }
+]

@@ -1,0 +1,138 @@
+---
+import Doodle from "./Doodle.astro";
+import { profile } from "../content/portfolio";
+
+const tabs = [
+  { id: "work", label: "Work", color: "var(--coral)" },
+  { id: "jobs", label: "Jobs", color: "var(--teal)" },
+  { id: "skills", label: "Skills", color: "var(--blue)" },
+  { id: "clubs", label: "Clubs", color: "var(--mustard)" },
+  { id: "hobby", label: "Hobby", color: "#c96442" },
+  { id: "contact", label: "Say hi", color: "var(--purple)" },
+];
+---
+
+<header class="topbar" data-hero-hide>
+  <a href="#top" class="logo font-hand" aria-label={`${profile.name}, back to top`}>
+    <span>Thomas</span><span class="logo-dot">.</span>
+  </a>
+  <div class="topbar-actions">
+    <button class="pad-toggle btn-sketch" type="button" aria-pressed="false" data-pad-toggle title="Doodle on my page (D)">
+      <Doodle name="pencil" size={22} sw={5} fill="var(--mustard)" boil={false} />
+      <span class="pad-label">doodle on me</span>
+    </button>
+    <a class="btn-sketch solid cv-btn" href={profile.cv} target="_blank" rel="noopener">CV ↗</a>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  {
+    tabs.map((t, i) => (
+      <a href={`#${t.id}`} class="tab" data-tab={t.id} style={`--tab:${t.color};--i:${i}`}>
+        <span>{t.label}</span>
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .topbar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem clamp(1rem, 3vw, 2rem) 0.9rem clamp(1rem, 8vw, 7.5rem);
+    pointer-events: none;
+    border-bottom: 1.5px dashed transparent;
+    transition: transform 320ms var(--ease-out), background-color 200ms, border-color 200ms;
+  }
+  .topbar.scrolled {
+    background: rgb(246 241 231 / 0.88);
+    backdrop-filter: blur(6px);
+    border-bottom-color: rgb(87 82 76 / 0.25);
+  }
+  .topbar > * { pointer-events: auto; }
+  .topbar.hidden { transform: translateY(-110%); }
+  .logo {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+    text-decoration: none;
+    rotate: -3deg;
+    transition: rotate 200ms var(--ease-out);
+  }
+  .logo:hover { rotate: 2deg; }
+  .logo-dot { color: var(--coral); }
+  .topbar-actions { display: flex; gap: 0.6rem; align-items: center; margin-right: clamp(0rem, 4vw, 3.5rem); }
+  .pad-toggle { font-size: 1.15rem; background: rgb(246 241 231 / 0.85); border-radius: 999px; border: 1.5px dashed var(--pencil); }
+  .pad-toggle[aria-pressed="true"] { background: var(--note-yellow); border-style: solid; border-color: var(--ink); }
+  .cv-btn { font-size: 1.2rem; }
+  @media (max-width: 640px) { .pad-label { display: none; } }
+
+  .tabs {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    z-index: 45;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    translate: 0 -50%;
+  }
+  .tab {
+    --out: 0px;
+    display: block;
+    width: 48px;
+    padding: 0.9rem 0;
+    background: var(--tab);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px 0 0 12px;
+    box-shadow: -2px 3px 0 rgb(0 0 0 / 0.12), inset 0 0 0 1.5px rgb(0 0 0 / 0.14);
+    transform: translateX(calc(14px - var(--out)));
+    transition: transform 260ms var(--ease-out), filter 200ms;
+  }
+  .tab span {
+    display: block;
+    writing-mode: vertical-rl;
+    rotate: 180deg;
+    margin: 0 0 0 6px;
+    font-family: var(--font-hand);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .tab:hover { --out: 10px; }
+  .tab.active { --out: 22px; filter: saturate(1.15) brightness(1.02); }
+  .tab:active { transform: translateX(calc(14px - var(--out))) scale(0.96); }
+
+  @media (max-width: 767px) {
+    .tabs {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      translate: 0 0;
+      flex-direction: row;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 8px;
+    }
+    .tab {
+      flex: 1 1 0;
+      max-width: 84px;
+      width: auto;
+      padding: 0.4rem 0.2rem 0.9rem;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+      transform: translateY(calc(12px - var(--out)));
+    }
+    .tab:active { transform: translateY(calc(12px - var(--out))) scale(0.96); }
+    .tab span { writing-mode: horizontal-tb; rotate: 0deg; margin: 0; font-size: 1rem; white-space: nowrap; }
+    .tab.active { --out: 8px; }
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+// Thomas conducting his band. Lives in the hero, next to the name.
+// Click Thomas to change tempo; hover (or tap) a musician for a solo.
+import Character from "./Character.astro";
+import Doodle from "./Doodle.astro";
+import { band } from "../lib/characters";
+
+const seats: Record<string, string> = {
+  clawd: "left:0%;top:42%;width:28%",
+  muse: "left:11%;top:6%;width:26%",
+  codex: "left:37%;top:-4%;width:26%",
+  grok: "left:63%;top:6%;width:25%",
+  openclaw: "left:72%;top:42%;width:28%",
+};
+const noteColors = ["var(--coral)", "var(--blue)", "var(--teal)", "var(--purple)", "var(--mustard)"];
+---
+
+<div
+  class="stage"
+  data-band
+  style="--beat:0.55s"
+  role="img"
+  aria-label="Doodle of Thomas, with glasses and headphones, conducting his band: Clawd on drums, Muse on cello, Codex on keytar, Grok on trumpet and OpenClaw on guitar."
+>
+  <Doodle name="squiggle" class="floor" size="100%" stretch sw={2} stroke="var(--pencil)" boil={false} seed="floor" data-hero-draw />
+
+  {
+    band.map((id, i) => (
+      <div class={`musician m-${id}`} style={seats[id]} data-musician data-depth={0.5 + (i % 3) * 0.3}>
+        <span class="float-note n1" aria-hidden="true">
+          <Doodle name="note" size={22} sw={4} fill={noteColors[i]} stroke={noteColors[i]} boil={false} seed={`fn1-${id}`} />
+        </span>
+        <span class="float-note n2" aria-hidden="true">
+          <Doodle name="notes" size={26} sw={4} fill={noteColors[(i + 2) % 5]} stroke={noteColors[(i + 2) % 5]} boil={false} seed={`fn2-${id}`} />
+        </span>
+        <div class="fig">
+          <Character id={id} size="100%" data-hero-draw />
+        </div>
+        <span class="solo font-hand" aria-hidden="true">solo!</span>
+      </div>
+    ))
+  }
+
+  <div class="podium-spot" data-depth="0.3">
+    <button class="conductor" type="button" data-conductor aria-label="Change the band's tempo">
+      <span class="fig">
+        <Character id="thomas" size="100%" data-hero-draw />
+      </span>
+      <span class="bubble font-hand" data-tempo aria-live="polite"></span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .stage {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 1 / 0.92;
+    justify-self: center;
+  }
+  .stage :global(.floor) {
+    position: absolute;
+    left: 4%;
+    bottom: 2%;
+    width: 92% !important;
+    height: 10% !important;
+    opacity: 0.55;
+  }
+  .musician { position: absolute; display: flex; flex-direction: column; align-items: center; }
+  .fig { display: block; width: 100%; transform-origin: 50% 100%; transition: scale 200ms var(--ease-spring); }
+  .solo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 0.5rem 0.1rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--coral);
+    border-radius: 4px 9px 5px 10px;
+    rotate: 8deg;
+    opacity: 0;
+    scale: 0.6;
+    transition: opacity 160ms var(--ease-out), scale 220ms var(--ease-spring);
+    pointer-events: none;
+  }
+  .podium-spot { position: absolute; left: 36%; top: 50%; width: 28%; }
+  .conductor { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+  .conductor:active .fig { scale: 0.96; }
+  .bubble {
+    position: absolute;
+    left: -30%;
+    top: 0;
+    padding: 0.1rem 0.6rem 0.25rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper-2);
+    border: 2px solid var(--ink);
+    border-radius: 16px 18px 4px 16px;
+    rotate: -6deg;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+  .bubble.show { opacity: 1; }
+
+  .float-note { position: absolute; left: 60%; top: 20%; opacity: 0; pointer-events: none; }
+  .float-note.n2 { left: 30%; top: 26%; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .musician:hover { --beat: 0.28s; z-index: 3; }
+    .musician:hover .fig { scale: 1.08; }
+    .musician:hover .solo { opacity: 1; scale: 1; }
+  }
+  .musician.solo-on { --beat: 0.28s; z-index: 3; }
+  .musician.solo-on .fig { scale: 1.08; }
+  .musician.solo-on .solo { opacity: 1; scale: 1; }
+
+  /* ---- the beat ---- */
+  .stage.playing .fig { animation: pose calc(var(--beat) * 2) step-end infinite; }
+  .stage.playing .m-muse .fig, .stage.playing .m-grok .fig { animation-delay: calc(var(--beat) * -1); }
+  @keyframes pose {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(-2deg); }
+  }
+  .stage.playing .float-note { animation: float calc(var(--beat) * 6) linear infinite; }
+  .stage.playing .float-note.n2 { animation-delay: calc(var(--beat) * -3); }
+  @keyframes float {
+    0% { opacity: 0; transform: translate(0, 0) rotate(-10deg); }
+    15% { opacity: 1; }
+    80% { opacity: 0.9; }
+    100% { opacity: 0; transform: translate(18px, -70px) rotate(18deg); }
+  }
+
+  .stage.playing :global(.stick-l) { transform-origin: 24px 60px; animation: lift-l var(--beat) step-end infinite; }
+  .stage.playing :global(.stick-r) { transform-origin: 96px 60px; animation: lift-r var(--beat) step-end infinite; }
+  .stage.playing :global(.cymbal) { transform-origin: 108px 68px; animation: shimmer var(--beat) step-end infinite; }
+  .stage.playing :global(.bow) { animation: bow calc(var(--beat) * 2) ease-in-out infinite; }
+  .stage.playing :global(.keytar) { transform-origin: 60px 84px; animation: keytar var(--beat) step-end infinite; }
+  .stage.playing :global(.horn) { transform-origin: 84px 64px; animation: horn calc(var(--beat) * 2) step-end infinite; }
+  .stage.playing :global(.puff) { transform-origin: 77px 64px; animation: puff calc(var(--beat) * 2) step-end infinite; }
+  .stage.playing :global(.strum) { transform-origin: 86px 70px; animation: strum var(--beat) step-end infinite; }
+  .stage.playing :global(.antennae) { transform-origin: 56px 34px; animation: keytar calc(var(--beat) * 2) step-end infinite; }
+  .stage.playing :global(.baton) { transform-origin: 75px 56px; animation: conduct calc(var(--beat) * 2) ease-in-out infinite; }
+  .stage.playing :global(.wave) { transform-origin: 45px 56px; animation: lift-r calc(var(--beat) * 2) step-end infinite; }
+  .stage.playing :global(.blink) { transform-origin: 62px 42px; animation: blink 3.4s step-end infinite; }
+
+  @keyframes lift-l { 0% { transform: rotate(-32deg); } 50% { transform: rotate(0deg); } }
+  @keyframes lift-r { 0% { transform: rotate(0deg); } 50% { transform: rotate(32deg); } }
+  @keyframes shimmer { 0% { transform: rotate(0deg); } 50% { transform: rotate(-7deg); } }
+  @keyframes bow {
+    0%, 100% { transform: translate(-7px, 1.5px); }
+    50% { transform: translate(7px, -1.5px); }
+  }
+  @keyframes keytar { 0% { transform: rotate(-4deg); } 50% { transform: rotate(3deg); } }
+  @keyframes horn { 0% { transform: rotate(-9deg); } 50% { transform: rotate(0deg); } }
+  @keyframes puff { 0% { transform: scale(1.25); } 50% { transform: scale(1); } }
+  @keyframes strum { 0% { transform: rotate(-22deg); } 50% { transform: rotate(8deg); } }
+  @keyframes conduct {
+    0% { transform: rotate(-26deg); }
+    25% { transform: rotate(12deg); }
+    50% { transform: rotate(-8deg); }
+    75% { transform: rotate(20deg); }
+    100% { transform: rotate(-26deg); }
+  }
+  @keyframes blink { 0%, 90% { transform: scaleY(1); } 93% { transform: scaleY(0.15); } }
+
+  .stage.paused :global(*) { animation-play-state: paused !important; }
+</style>

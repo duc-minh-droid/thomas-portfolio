@@ -1,0 +1,6 @@
+/Profile.pdf
+/Thomas_Nguyen_CV.pdf
+.playwright-mcp
+node_modules
+dist
+.astro

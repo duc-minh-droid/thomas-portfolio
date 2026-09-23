@@ -1,0 +1,150 @@
+---
+import Doodle from "../Doodle.astro";
+import SectionTitle from "../SectionTitle.astro";
+import Character from "../Character.astro";
+import { clubs, education } from "../../content/portfolio";
+---
+
+<section id="clubs" class="clubs" aria-labelledby="clubs-title">
+  <div class="wrap">
+    <SectionTitle
+      id="clubs"
+      page={5}
+      kicker="extracurriculars · education"
+      title="Outside class"
+      note="Things I started, taught, or joined for fun. Report card's on the right, for the record."
+      color="var(--mustard)"
+      doodle="trophy"
+    />
+
+    <div class="board">
+      <ul class="notes">
+        {
+          clubs.map((c, i) => (
+            <li class="sticky club" style={`--note:${c.color};--rot:${[-3, 2.5, -1.5, 3.5][i % 4]}deg`} data-club>
+              {i === 0 && (
+                <span class="party" aria-hidden="true">
+                  <Character id="openclaw" mini expr="grin" acc={["party", "balloon"]} size="100%" />
+                </span>
+              )}
+              <span class="pin" aria-hidden="true">
+                <Doodle name="pin" size={40} fill={["var(--coral)", "var(--blue)", "var(--teal)", "var(--purple)"][i % 4]} sw={3.4} boil={false} seed={`pin-${i}`} />
+              </span>
+              <div class="club-head">
+                <h3 class="font-hand">{c.name}</h3>
+                <Doodle name={c.doodle} size={46} sw={2.8} stroke="var(--ink)" draw seed={`club-${i}`} />
+              </div>
+              <p class="club-role font-mono">{c.role} · {c.start} – {c.end}</p>
+              <p class="club-text">{c.text}</p>
+              <p class="club-org font-hand">{c.org}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="report" data-report>
+        <span class="tape" style="top:-14px;left:40%;rotate:-3deg" />
+        <span class="grad" aria-hidden="true">
+          <Character id="muse" mini expr="happy" acc={["grad"]} size="100%" />
+        </span>
+        <h3 class="report-title font-hand">
+          <Doodle name="gradcap" size={48} fill="var(--blue)" sw={2.6} seed="gradcap" />
+          Report card
+        </h3>
+        <ul class="grades">
+          {
+            education.map((e, i) => (
+              <li class="grade">
+                <div>
+                  <p class="school font-hand">{e.school}</p>
+                  <p class="course">{e.course}</p>
+                  <p class="detail font-mono">{e.detail}</p>
+                  <p class="result">{e.grade}</p>
+                </div>
+                <span class="stamp round grade-stamp font-mono" style={`--stamp:${i ? "var(--blue)" : "var(--coral)"};--r:${i ? 10 : -12}deg`} data-stamp>
+                  <span>{e.stamp}</span>
+                  <small>{e.start}–{e.end.slice(2)}</small>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .clubs { position: relative; padding: clamp(4rem, 10vw, 7rem) 0; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(1.25rem, 6vw, 5rem) 0 clamp(1.25rem, 10vw, 8.5rem); }
+  .board {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .notes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.4rem 1.8rem;
+  }
+  .club {
+    padding: 1.6rem 1.2rem 1.2rem;
+    rotate: var(--rot);
+    transform-origin: 50% 0;
+    transition: rotate 400ms var(--ease-spring);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .club:hover { rotate: calc(var(--rot) * -0.6); }
+  }
+  .party { position: absolute; left: -2.6rem; top: -3.6rem; width: 72px; rotate: -10deg; z-index: 2; }
+  .grad { position: absolute; right: 0.6rem; top: -62px; width: 74px; rotate: 6deg; }
+  .pin { position: absolute; top: -20px; left: 50%; translate: -50% 0; }
+  .club-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+  .club-head h3 { font-size: 2.1rem; font-weight: 700; line-height: 1; }
+  .club-role { margin-top: 0.3rem; font-size: 0.68rem; color: var(--graphite); }
+  .club-text { margin-top: 0.7rem; font-size: 0.93rem; line-height: 1.5; color: #3e3a35; }
+  .club-org { margin-top: 0.6rem; font-size: 1.2rem; color: var(--graphite); text-align: right; }
+
+  .report {
+    position: relative;
+    padding: 1.8rem 1.4rem 1.4rem;
+    background:
+      repeating-linear-gradient(transparent 0 31px, rgb(70 110 170 / 0.16) 31px 32px),
+      var(--paper-2);
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.05), 0 18px 30px -18px rgb(50 35 15 / 0.45);
+    rotate: 1.2deg;
+  }
+  .report-title { display: flex; align-items: center; gap: 0.6rem; font-size: 2.3rem; font-weight: 700; line-height: 1; }
+  .grades { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: 1.6rem; }
+  .grade { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
+  .school { font-size: 1.7rem; font-weight: 700; line-height: 1; }
+  .course { margin-top: 0.2rem; font-weight: 700; font-size: 0.95rem; }
+  .detail { margin-top: 0.3rem; font-size: 0.66rem; color: var(--graphite); line-height: 1.5; }
+  .result { margin-top: 0.3rem; font-size: 0.9rem; color: var(--graphite); }
+  .grade-stamp {
+    width: 88px;
+    font-size: 1.05rem;
+    line-height: 1.1;
+    text-align: center;
+    rotate: var(--r);
+  }
+  .grade-stamp small { display: block; font-size: 0.6rem; letter-spacing: 0.05em; }
+  .motion .grade-stamp { opacity: 0; }
+  .motion .grade-stamp.inked { animation: slam-round 420ms var(--ease-out) forwards; }
+  @keyframes slam-round {
+    0% { opacity: 0; transform: scale(2.2); }
+    60% { opacity: 1; transform: scale(0.92); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @media (max-width: 1000px) {
+    .board { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .notes { grid-template-columns: 1fr; }
+  }
+</style>

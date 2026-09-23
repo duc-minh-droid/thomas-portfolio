@@ -1,0 +1,198 @@
+---
+import Doodle from "../Doodle.astro";
+import SketchBox from "../SketchBox.astro";
+import BandStage from "../BandStage.astro";
+import { profile } from "../../content/portfolio";
+
+const [first, last] = profile.name.split(" ");
+const chars = (w: string) => [...w];
+---
+
+<section id="top" class="hero" aria-labelledby="hero-title">
+  <span class="page-no font-hand" aria-hidden="true">p.1</span>
+
+  <div class="hero-copy">
+    <p class="hello font-hand" data-hero-hide>hi, I'm</p>
+
+    <h1 id="hero-title" class="hero-name font-hand" aria-label={profile.name}>
+      <span class="line" aria-hidden="true">{chars(first).map((c) => <span class="char">{c}</span>)}</span>
+      <span class="line line-2" aria-hidden="true">
+        {chars(last).map((c) => <span class="char">{c}</span>)}
+        <Doodle name="underline" class="name-underline" size="100%" stretch sw={4} stroke="var(--coral)" boil={false} seed="name-ul" />
+      </span>
+      <Doodle name="pencil" class="hero-pencil" size={86} sw={3} fill="var(--mustard)" boil={false} seed="writer" />
+    </h1>
+
+    <p class="role" data-hero-hide>
+      <span class="marker">{profile.role}</span>.{" "}{profile.tagline}
+    </p>
+
+    <div class="stickers" data-hero-hide>
+      <span class="sticker-burst">
+        <Doodle name="burst" size={132} fill="var(--mustard)" stroke="var(--ink)" sw={2} seed="burst-1" />
+        <span class="font-hand">4×<br />hackathon<br />winner</span>
+      </span>
+      <span class="sticker-label font-hand">
+        <span class="tape" style="top:-14px;left:50%;translate:-50% 0;rotate:-4deg;width:70px;height:22px"></span>
+        {profile.stickers[1]}
+      </span>
+    </div>
+
+    <div class="ctas" data-hero-hide>
+      <a href="#work" class="btn-sketch solid">show me the stuff ↓</a>
+      <a href={`mailto:${profile.email}`} class="btn-sketch sketch-host">
+        say hi
+        <SketchBox seed="hi-btn" />
+      </a>
+    </div>
+
+    <p class="meta font-mono" data-hero-hide>
+      <Doodle name="pin" size={18} sw={5} fill="var(--coral)" boil={false} />
+      {profile.location} · {profile.headline}
+    </p>
+  </div>
+
+  <div class="band-wrap">
+    <BandStage />
+  </div>
+
+  <a href="#work" class="scroll-hint font-hand" data-hero-hide aria-label="Scroll to projects">
+    <span>scroll</span>
+    <Doodle name="arrowDown" size={40} sw={3} stroke="var(--ink)" seed="scroll" />
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 4vw, 4rem);
+    min-height: 100svh;
+    padding: 6.5rem clamp(1.25rem, 6vw, 6rem) 5rem clamp(1.25rem, 10vw, 9rem);
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  .page-no {
+    position: absolute;
+    left: clamp(1rem, 4.2vw, 3.6rem);
+    top: 5.2rem;
+    font-size: 1.3rem;
+    color: var(--pencil);
+    rotate: -6deg;
+  }
+  .hello {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: var(--graphite);
+    rotate: -4deg;
+    margin-bottom: -0.6rem;
+    margin-left: 0.3rem;
+  }
+  .hero-name {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(5rem, 12.5vw, 11.5rem);
+    font-weight: 700;
+    line-height: 0.82;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .line { position: relative; display: block; width: fit-content; white-space: nowrap; }
+  .line-2 { margin-left: clamp(1.5rem, 5vw, 4.5rem); color: var(--ink); }
+  .char { display: inline-block; will-change: clip-path; }
+  .name-underline {
+    position: absolute;
+    left: -4%;
+    bottom: -0.2em;
+    width: 108% !important;
+    height: 0.34em !important;
+  }
+  .hero-pencil {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    opacity: 0;
+    filter: drop-shadow(3px 5px 0 rgb(0 0 0 / 0.1));
+    z-index: 3;
+  }
+  .role {
+    max-width: 34rem;
+    margin-top: 1.8rem;
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    line-height: 1.55;
+    color: var(--graphite);
+  }
+  .role .marker { font-weight: 800; color: var(--ink); }
+  .stickers {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    margin-top: 1.4rem;
+  }
+  .sticker-burst {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 132px;
+    height: 132px;
+    rotate: -10deg;
+  }
+  .sticker-burst > :global(svg) { position: absolute; inset: 0; }
+  .sticker-burst > span {
+    position: relative;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 0.95;
+    text-align: center;
+    color: var(--ink);
+  }
+  .sticker-label {
+    position: relative;
+    padding: 0.5rem 1rem;
+    background: var(--paper-2);
+    font-size: 1.5rem;
+    font-weight: 700;
+    rotate: 3deg;
+    box-shadow: 0 8px 14px -8px rgb(60 40 10 / 0.4);
+  }
+  .ctas { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.6rem; }
+  .ctas .btn-sketch { font-size: 1.5rem; padding: 0.55rem 1.3rem 0.65rem; }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.6rem;
+    font-size: 0.75rem;
+    color: var(--pencil);
+  }
+
+  .band-wrap { position: relative; display: grid; }
+
+  .scroll-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 1.2rem;
+    translate: -50% 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.3rem;
+    color: var(--graphite);
+    text-decoration: none;
+  }
+  .motion .scroll-hint :global(svg) { animation: bob 1.4s steps(4) infinite; }
+  @keyframes bob { 50% { translate: 0 8px; } }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 5.5rem;
+      padding-bottom: 6rem;
+    }
+    .band-wrap { order: 2; max-width: 460px; width: 100%; justify-self: center; }
+    .scroll-hint { display: none; }
+  }
+</style>

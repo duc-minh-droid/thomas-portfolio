@@ -1,0 +1,141 @@
+---
+import Doodle from "../Doodle.astro";
+import SectionTitle from "../SectionTitle.astro";
+import Character from "../Character.astro";
+import { jobs } from "../../content/portfolio";
+import type { Acc, CharId, Expr } from "../../lib/characters";
+
+// a band member perched on each card, dressed for the office
+const perched: { id: CharId; expr: Expr; acc: Acc[] }[] = [
+  { id: "codex", expr: "grin", acc: ["headset"] },
+  { id: "clawd", expr: "wink", acc: ["coffee"] },
+  { id: "muse", expr: "happy", acc: ["note"] },
+];
+
+const split = (text: string, mark?: string) => {
+  if (!mark || !text.includes(mark)) return [text, "", ""];
+  const i = text.indexOf(mark);
+  return [text.slice(0, i), mark, text.slice(i + mark.length)];
+};
+const markTypes = ["circle", "underline", "highlight", "box"];
+---
+
+<section id="jobs" class="jobs" aria-labelledby="jobs-title">
+  <div class="wrap">
+    <SectionTitle
+      id="jobs"
+      page={3}
+      kicker="experience · day jobs"
+      title="Day jobs"
+      note="Three internships so far. Speech-to-text at Fremantle, a whole year at Sophos, then agents at Zayo."
+      color="var(--teal)"
+      doodle="laptop"
+    />
+
+    <ol class="job-list">
+      {
+        jobs.map((job, i) => (
+          <li class="job" style={`--accent:${job.color};rotate:${[-1.2, 0.8, -0.4][i % 3]}deg`} data-job>
+            <span class="perch" aria-hidden="true">
+              <Character {...perched[i % perched.length]} mini size="100%" />
+            </span>
+            <span class="clip" aria-hidden="true">
+              <Doodle name="paperclip" size={64} sw={3.2} stroke="var(--graphite)" boil={false} seed={`clip-${i}`} />
+            </span>
+            <div class="job-head">
+              <div>
+                <h3 class="company font-hand">{job.company}</h3>
+                <p class="role font-mono">{job.role}</p>
+              </div>
+              <span class="job-doodle" aria-hidden="true">
+                <Doodle name={job.doodle} size={62} fill={job.color} sw={2.6} draw seed={`job-${i}`} />
+              </span>
+            </div>
+            <p class="dates">
+              <span class="stamp font-mono" style={`--stamp:${job.color};rotate:-3deg`}>
+                {job.start} → {job.end}
+              </span>
+              <span class="loc font-hand">{job.location}</span>
+            </p>
+            <ul class="points">
+              {job.points.map((pt, j) => {
+                const [a, m, b] = split(pt.text, pt.mark);
+                return (
+                  <li>
+                    <Doodle name="check" size={18} sw={6} stroke={job.color} boil={false} seed={`chk-${i}-${j}`} class="bullet" />
+                    <span>
+                      {a}
+                      {m && (
+                        <strong class="num" data-mark={markTypes[(i + j) % markTypes.length]} data-mark-color={job.color}>
+                          {m}
+                        </strong>
+                      )}
+                      {b}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+            <p class="job-note font-hand" aria-hidden="true">
+              <Doodle name="arrow" size={40} sw={3} stroke="var(--graphite)" boil={false} rotate={150} seed={`jn-${i}`} />
+              {job.note}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .jobs { position: relative; padding: clamp(4rem, 10vw, 7rem) 0; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(1.25rem, 6vw, 5rem) 0 clamp(1.25rem, 10vw, 8.5rem); }
+  .job-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: start;
+  }
+  .job {
+    position: relative;
+    padding: 2.2rem 1.5rem 1.6rem;
+    background: var(--paper-2);
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.05), 0 18px 30px -18px rgb(50 35 15 / 0.45);
+    border-top: 6px solid var(--accent);
+    transition: transform 260ms var(--ease-out);
+  }
+  .job:nth-child(2) { margin-top: 3rem; }
+  .job:nth-child(3) { margin-top: 1rem; }
+  @media (hover: hover) and (pointer: fine) {
+    .job:hover { transform: translateY(-5px) rotate(0.6deg); }
+  }
+  .perch { position: absolute; top: -60px; right: 4.6rem; width: 66px; z-index: 3; rotate: 4deg; }
+  .clip { position: absolute; top: -34px; left: 1.4rem; rotate: -8deg; }
+  .job-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+  .company { font-size: 2.5rem; font-weight: 700; line-height: 0.95; color: var(--ink); }
+  .role { margin-top: 0.35rem; font-size: 0.76rem; color: var(--graphite); letter-spacing: 0.04em; }
+  .job-doodle { flex: none; rotate: 10deg; margin-top: -0.6rem; }
+  .dates { display: flex; align-items: center; gap: 0.8rem; margin-top: 1rem; }
+  .dates .stamp { font-size: 0.72rem; }
+  .loc { font-size: 1.35rem; color: var(--graphite); }
+  .points { list-style: none; padding: 0; margin: 1.1rem 0 0; display: grid; gap: 0.8rem; }
+  .points li { display: grid; grid-template-columns: 18px 1fr; gap: 0.6rem; font-size: 0.95rem; line-height: 1.55; color: var(--graphite); }
+  .points :global(.bullet) { margin-top: 0.25rem; }
+  .num { position: relative; margin: 0 0.3em; color: var(--ink); font-weight: 800; white-space: nowrap; }
+  .job-note {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+    font-size: 1.45rem;
+    color: var(--accent);
+    rotate: -2deg;
+  }
+  @media (max-width: 1000px) {
+    .job-list { grid-template-columns: 1fr; max-width: 40rem; }
+    .job:nth-child(n) { margin-top: 2rem; }
+  }
+</style>

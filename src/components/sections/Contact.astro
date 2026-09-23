@@ -1,0 +1,185 @@
+---
+import Doodle from "../Doodle.astro";
+import SketchBox from "../SketchBox.astro";
+import Character from "../Character.astro";
+import { profile } from "../../content/portfolio";
+import { siGithub, siX } from "simple-icons";
+
+const linkedinPath =
+  "M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z";
+const iconPath: Record<string, string> = { github: siGithub.path, x: siX.path, linkedin: linkedinPath };
+---
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <p class="kicker font-mono" data-reveal>contact · last page</p>
+    <h2 id="contact-title" class="big font-hand" data-reveal>
+      Let's build<br />something <span class="scribble">weird<Doodle name="underline" size="100%" stretch sw={4} stroke="var(--coral)" boil={false} draw seed="weird" class="weird-ul" /></span>{" "}
+      <span class="amp">&amp;</span> useful.
+    </h2>
+
+    <div class="contact-grid">
+      <div class="envelope-wrap" data-reveal>
+        <Doodle name="envelope" size="100%" fill="var(--mustard)" sw={1.1} roughness={1.5} draw seed="env" class="envelope" />
+        <span class="env-critter" aria-hidden="true"><Character id="grok" mini expr="love" acc={["heart"]} size="100%" draw /></span>
+        <div class="plane" data-plane aria-hidden="true">
+          <Doodle name="plane" size={72} fill="var(--note-blue)" sw={2.4} boil={false} seed="plane" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <p class="lead" data-reveal>
+          I'm after AI engineering and software roles, so if you're hiring, say hi. I'll also happily talk agents, order
+          books or renderers with anyone who'll listen.
+        </p>
+
+        <div class="email-row" data-reveal>
+          <a class="email font-hand" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <button class="btn-sketch solid" type="button" data-copy={profile.email}>
+            <span data-copy-label>copy email</span>
+          </button>
+        </div>
+        <p class="copied font-hand" data-copied aria-live="polite"></p>
+
+        <ul class="socials" data-reveal>
+          {
+            profile.socials.map((s, i) => (
+              <li>
+                <a class="social sketch-host" href={s.href} target="_blank" rel="noopener" style={`rotate:${[-3, 2, -1][i]}deg`}>
+                  <SketchBox seed={`soc-${s.label}`} sw={1.6} />
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d={iconPath[s.icon]} /></svg>
+                  <span class="font-hand">{s.label}</span>
+                  <small class="font-mono">{s.handle}</small>
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a class="social sketch-host" href={profile.cv} target="_blank" rel="noopener" style="rotate:3deg">
+              <SketchBox seed="soc-cv" sw={1.6} />
+              <Doodle name="book" size={24} sw={5} fill="var(--coral)" boil={false} seed="cv-book" />
+              <span class="font-hand">CV</span>
+              <small class="font-mono">pdf ↗</small>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="byes" aria-hidden="true" data-reveal>
+      <Character id="clawd" mini expr="wink" acc={["party"]} size={84} />
+      <Character id="muse" mini expr="love" size={82} />
+      <Character id="codex" mini expr="grin" size={84} />
+      <Character id="grok" mini expr="happy" acc={["bow"]} size={78} />
+      <Character id="openclaw" mini expr="happy" acc={["flower"]} size={82} />
+      <span class="font-hand">the band says bye too</span>
+    </div>
+
+    <div class="signoff" data-signoff>
+      <p class="font-hand thanks">thanks for flipping through,</p>
+      <p class="signature font-hand" aria-label="Thomas">
+        {[..."Thomas"].map((c) => <span class="char">{c}</span>)}
+      </p>
+      <Doodle name="heart" size={44} fill="var(--coral)" sw={2.6} draw seed="sig-heart" class="sig-heart" />
+    </div>
+
+    <footer class="foot font-mono">
+      <span>© {new Date().getFullYear()} {profile.name}</span>
+      <span>hand-drawn in code · Astro, GSAP, Rough.js</span>
+      <a href="#top">back to p.1 ↑</a>
+    </footer>
+  </div>
+</section>
+
+<style>
+  .contact { position: relative; padding: clamp(4rem, 10vw, 7rem) 0 6rem; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(1.25rem, 6vw, 5rem) 0 clamp(1.25rem, 10vw, 8.5rem); }
+  .kicker { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--graphite); }
+  .big {
+    margin-top: 0.4rem;
+    font-size: clamp(3.6rem, 9vw, 8rem);
+    font-weight: 700;
+    line-height: 0.9;
+  }
+  .scribble { position: relative; color: var(--coral); }
+  .weird-ul { position: absolute; left: -4%; bottom: -0.12em; width: 108% !important; height: 0.28em !important; }
+  .amp { color: var(--pencil); font-weight: 400; }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+  }
+  .envelope-wrap { position: relative; max-width: 360px; rotate: -6deg; }
+  .env-critter { position: absolute; right: -14%; top: -28%; width: 34%; rotate: 10deg; }
+  .plane { position: absolute; left: 40%; top: 20%; opacity: 0; pointer-events: none; z-index: 30; }
+  .lead { font-size: 1.1rem; line-height: 1.6; color: var(--graphite); max-width: 34rem; }
+  .email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.4rem; }
+  .email {
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--coral);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+    word-break: break-all;
+  }
+  .copied { min-height: 1.8rem; margin-top: 0.4rem; font-size: 1.5rem; color: var(--teal); rotate: -2deg; }
+  .socials { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--paper-2);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 200ms var(--ease-out);
+  }
+  .social svg { width: 22px; height: 22px; fill: var(--ink); }
+  .social span { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+  .social small { font-size: 0.66rem; color: var(--graphite); }
+  .social:active { transform: scale(0.96); }
+  @media (hover: hover) and (pointer: fine) {
+    .social:hover { transform: translateY(-3px) rotate(0deg) !important; }
+  }
+
+  .byes {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.2rem;
+    margin-top: clamp(3rem, 6vw, 4.5rem);
+  }
+  .byes span { margin-left: 0.8rem; font-size: 1.5rem; color: var(--graphite); rotate: -3deg; }
+  .byes :global(.character:nth-child(odd)) { rotate: -5deg; }
+  .byes :global(.character:nth-child(even)) { rotate: 5deg; }
+  @media (max-width: 600px) { .byes span { display: none; } }
+  .signoff { position: relative; margin: clamp(4rem, 8vw, 6rem) 0 0 auto; width: fit-content; text-align: right; }
+  .thanks { font-size: 1.6rem; color: var(--graphite); }
+  .signature { font-size: clamp(4rem, 8vw, 6rem); font-weight: 700; line-height: 0.9; color: var(--blue); rotate: -6deg; }
+  .signature .char { display: inline-block; }
+  .motion .signature .char { clip-path: inset(-50% 100% -50% -50%); }
+  .sig-heart { position: absolute; right: -2.8rem; bottom: -0.4rem; rotate: 14deg; }
+
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-top: 4rem;
+    padding-top: 1.2rem;
+    border-top: 1.5px dashed rgb(87 82 76 / 0.35);
+    font-size: 0.72rem;
+    color: var(--pencil);
+  }
+  .foot a { color: var(--graphite); }
+
+  @media (max-width: 860px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .envelope-wrap { max-width: 220px; }
+    .sig-heart { right: -1rem; bottom: -2.4rem; }
+  }
+</style>

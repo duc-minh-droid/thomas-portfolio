@@ -1,0 +1,28 @@
+---
+// Rough rectangle border that stretches to its (position:relative) parent.
+// Two seeds: the second one shows on hover so the border "re-draws" itself.
+import { sketchBox, seedOf } from "../lib/sketch";
+
+interface Props {
+  seed?: string;
+  stroke?: string;
+  sw?: number;
+  roughness?: number;
+  class?: string;
+}
+const { seed = "box", stroke = "var(--ink)", sw = 1.6, roughness = 0.9, class: cls = "" } = Astro.props;
+const s = seedOf(seed);
+const frames = [s, s + 999].map((x) => sketchBox({ seed: x, stroke, strokeWidth: sw, roughness }));
+---
+
+<svg class:list={["sketch-box", cls]} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  {
+    frames.map((paths) => (
+      <g class="frame">
+        {paths.map((p) => (
+          <path d={p.d} style={`stroke:${p.stroke}`} stroke-width={p.width} />
+        ))}
+      </g>
+    ))
+  }
+</svg>

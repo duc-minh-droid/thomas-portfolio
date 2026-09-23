@@ -1,0 +1,85 @@
+---
+import * as icons from "simple-icons";
+import Doodle from "./Doodle.astro";
+import { sketchCircle, seedOf } from "../lib/sketch";
+import type { Skill } from "../content/portfolio";
+
+interface Props {
+  skill: Skill;
+  accent: string;
+}
+const { skill, accent } = Astro.props;
+const isDoodle = skill.icon.startsWith("doodle:");
+const si = isDoodle ? null : (icons as unknown as Record<string, { path: string; hex: string }>)["si" + skill.icon];
+const brand = skill.color ?? (si ? `#${si.hex}` : accent);
+const ring = sketchCircle({ seed: seedOf(skill.name), stroke: "var(--ink)", strokeWidth: 1.5, roughness: 1.4 });
+---
+
+<li class="skill" style={`--brand:${brand === "#000000" || brand === "#191919" || brand === "#0A0A0A" || brand === "#010101" || brand === "#0F0F11" ? "var(--ink)" : brand}`} data-skill>
+  <span class="skill-sticker">
+    <svg class="skill-ring" viewBox="-4 -4 108 108" aria-hidden="true">
+      {ring.map((p) => <path d={p.d} style={`stroke:${p.stroke}`} stroke-width={p.width} fill="none" />)}
+    </svg>
+    {
+      si ? (
+        <svg class="skill-logo" viewBox="0 0 24 24" aria-hidden="true">
+          <path d={si.path} />
+        </svg>
+      ) : (
+        <Doodle name={skill.icon.slice(7)} size="62%" sw={4.5} roughness={1} fill="var(--brand)" boil={false} class="skill-doodle" />
+      )
+    }
+  </span>
+  <span class="skill-name">{skill.name}</span>
+</li>
+
+<style>
+  .skill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: 74px;
+    text-align: center;
+  }
+  .skill-sticker {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--paper-2);
+    box-shadow: 0 6px 10px -6px rgb(60 40 10 / 0.35);
+    transition: transform 220ms var(--ease-spring), background-color 220ms var(--ease-out);
+  }
+  .skill-ring {
+    position: absolute;
+    inset: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    overflow: visible;
+    stroke-linecap: round;
+  }
+  .skill-logo {
+    width: 46%;
+    height: 46%;
+    fill: var(--ink);
+    filter: url(#pencil-edge);
+    transition: fill 220ms var(--ease-out);
+  }
+  .skill-name {
+    font-family: var(--font-hand);
+    font-size: 1.12rem;
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--graphite);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .skill:hover .skill-sticker {
+      transform: rotate(-8deg) scale(1.12);
+      background: color-mix(in srgb, var(--brand) 14%, var(--paper-2));
+    }
+    .skill:hover .skill-logo { fill: var(--brand); }
+  }
+</style>

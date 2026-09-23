@@ -1,0 +1,26 @@
+{
+  "name": "thomas-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "sync:projects": "node scripts/sync-projects.mjs"
+  },
+  "dependencies": {
+    "astro": "7.3.2",
+    "gsap": "3.15.0",
+    "lenis": "1.3.26",
+    "perfect-freehand": "1.2.3",
+    "rough-notation": "0.5.1",
+    "roughjs": "4.6.6",
+    "simple-icons": "16.31.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3"
+  }
+}

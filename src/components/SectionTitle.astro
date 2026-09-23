@@ -1,0 +1,72 @@
+---
+import Doodle from "./Doodle.astro";
+
+interface Props {
+  id: string;
+  kicker: string;
+  title: string;
+  note?: string;
+  page: number;
+  color?: string;
+  doodle?: string;
+}
+const { id, kicker, title, note, page, color = "var(--coral)", doodle = "sparkle" } = Astro.props;
+---
+
+<header class="st" data-reveal-group>
+  <span class="st-page font-hand" aria-hidden="true">p.{page}</span>
+  <p class="st-kicker font-mono" data-reveal>{kicker}</p>
+  <h2 id={`${id}-title`} class="st-title font-hand" data-reveal>
+    <span class="st-text">
+      {title}
+      <Doodle name="underline" class="st-ul" size="100%" stretch sw={3.5} stroke={color} boil={false} draw seed={`${id}-ul`} />
+    </span>
+    <Doodle name={doodle} class="st-doodle" size={54} fill={color} sw={2.6} draw seed={`${id}-d`} />
+  </h2>
+  {note && <p class="st-note font-hand" data-reveal>{note}</p>}
+</header>
+
+<style>
+  .st { position: relative; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+  .st-page {
+    position: absolute;
+    left: calc(-1 * clamp(0rem, 6vw, 5.4rem));
+    top: 0.2rem;
+    font-size: 1.3rem;
+    color: var(--pencil);
+    rotate: -6deg;
+  }
+  @media (max-width: 767px) { .st-page { display: none; } }
+  .st-kicker {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+  .st-title {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0.3rem;
+    font-size: clamp(3.2rem, 7vw, 5.6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    color: var(--ink);
+  }
+  .st-text { position: relative; }
+  .st-ul {
+    position: absolute;
+    left: -3%;
+    bottom: -0.16em;
+    width: 106% !important;
+    height: 0.3em !important;
+  }
+  .st-doodle { flex: none; rotate: 8deg; }
+  .st-note {
+    margin-top: 0.8rem;
+    font-size: clamp(1.35rem, 2vw, 1.65rem);
+    color: var(--graphite);
+    rotate: -1.2deg;
+    max-width: 40rem;
+  }
+</style>

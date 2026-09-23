@@ -1,0 +1,150 @@
+---
+import Doodle from "../Doodle.astro";
+import SketchBox from "../SketchBox.astro";
+import SectionTitle from "../SectionTitle.astro";
+import SkillIcon from "../SkillIcon.astro";
+import Character from "../Character.astro";
+import { skillGroups } from "../../content/portfolio";
+
+const total = skillGroups.reduce((n, g) => n + g.skills.length, 0);
+// grid placement around the hub (desktop): 3×3 with the hub in the middle
+const areas = ["a", "b", "c", "d", "f", "g", "h"];
+---
+
+<section id="skills" class="skills" aria-labelledby="skills-title">
+  <div class="wrap">
+    <SectionTitle
+      id="skills"
+      page={4}
+      kicker="skills · tools I reach for"
+      title="My toolbox"
+      note={`${total} tools, sorted roughly the way my brain files them.`}
+      color="var(--blue)"
+      doodle="gear"
+    />
+
+    <div class="map" data-mindmap>
+      <svg class="branches" aria-hidden="true"></svg>
+
+      <div class="hub" data-hub>
+        <Doodle name="cloud" size="100%" fill="var(--note-blue)" sw={1.6} stroke="var(--ink)" seed="hub-cloud" class="hub-cloud" />
+        <div class="hub-inner">
+          <Doodle name="brain" size={54} fill="var(--note-pink)" sw={3} seed="hub-brain" />
+          <p class="font-hand">Thomas's<br />toolbox</p>
+        </div>
+      </div>
+
+      {
+        skillGroups.map((g, i) => (
+          <div class="group sketch-host" style={`grid-area:${areas[i]};--accent:${g.color};rotate:${[-0.8, 0.6, -0.4, 0.9, -0.6, 0.5, -1][i]}deg`} data-group>
+            <SketchBox seed={`grp-${g.title}`} sw={1.7} />
+            <h3 class="group-title font-hand">
+              <span class="dot" />
+              {g.title}
+            </h3>
+            <ul class="icons">
+              {g.skills.map((s) => (
+                <SkillIcon skill={s} accent={g.color} />
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+
+      <p class="map-note font-hand" style="grid-area:i" data-reveal>
+        <Character id="codex" mini expr="determined" acc={["hardhat", "wrench"]} size={84} />
+        always adding to this.<br />lately: <span class="marker">a lot of Rust</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills { position: relative; padding: clamp(4rem, 10vw, 7rem) 0; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(1.25rem, 6vw, 5rem) 0 clamp(1.25rem, 10vw, 8.5rem); }
+  .map {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      "a b c"
+      "d hub f"
+      "g h i";
+    gap: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  .branches {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 0;
+  }
+  :global(.branches path) { fill: none; stroke-linecap: round; }
+
+  .hub {
+    grid-area: hub;
+    position: relative;
+    z-index: 1;
+    width: min(100%, 300px);
+    justify-self: center;
+    display: grid;
+    place-items: center;
+  }
+  .hub :global(.hub-cloud) { grid-area: 1 / 1; }
+  .hub-inner {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4%;
+  }
+  .hub-inner p { font-size: 1.7rem; font-weight: 700; line-height: 0.9; text-align: center; }
+
+  .group {
+    position: relative;
+    z-index: 1;
+    padding: 1.1rem 1rem 1.3rem;
+    background: rgb(255 253 248 / 0.92);
+  }
+  .group-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .dot { width: 14px; height: 14px; border-radius: 50% 40% 55% 45%; background: var(--accent); flex: none; }
+  .icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 0.3rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .map-note {
+    position: relative;
+    z-index: 1;
+    font-size: 1.55rem;
+    line-height: 1.15;
+    color: var(--graphite);
+    rotate: -3deg;
+    padding-left: 1rem;
+  }
+  .map-note :global(svg) { margin-bottom: 0.3rem; }
+
+  @media (max-width: 1000px) {
+    .map {
+      grid-template-columns: 1fr;
+      grid-template-areas: none;
+      max-width: 36rem;
+    }
+    .map > * { grid-area: auto !important; }
+    .hub { width: 240px; }
+    .branches { display: none; }
+  }
+</style>

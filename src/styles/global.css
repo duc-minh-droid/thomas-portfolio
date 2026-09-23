@@ -1,0 +1,344 @@
+@import "tailwindcss";
+
+@theme {
+  --font-hand: "Caveat", "Segoe Print", cursive;
+  --font-body: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-paper: #f6f1e7;
+  --color-ink: #25221f;
+  --color-graphite: #57524c;
+  --color-coral: #e8604c;
+  --color-teal: #2a9d8f;
+  --color-blue: #2d5bd0;
+  --color-mustard: #e0a526;
+  --color-purple: #7b5cc4;
+}
+
+:root {
+  --paper: #f6f1e7;
+  --paper-2: #fffdf8;
+  --ink: #25221f;
+  --graphite: #57524c;
+  --pencil: #8a847c;
+  --grid: rgb(70 110 170 / 0.11);
+  --margin-line: rgb(226 110 100 / 0.55);
+  --coral: #e8604c;
+  --teal: #2a9d8f;
+  --blue: #2d5bd0;
+  --mustard: #e0a526;
+  --purple: #7b5cc4;
+  --highlight: rgb(255 222 70 / 0.65);
+  --note-yellow: #fff1a8;
+  --note-blue: #cfe6ff;
+  --note-green: #d5f2c8;
+  --note-pink: #ffd6e0;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  color-scheme: light;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  min-height: 100vh;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+}
+
+/* clip on a wrapper, not body: body overflow propagates to the viewport and won't clip on mobile */
+.page { overflow-x: clip; }
+
+/* paper grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .33 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* notebook margin line + spiral binding (desktop) */
+.notebook-edge {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 92px;
+  pointer-events: none;
+  z-index: 1;
+}
+.notebook-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 2px;
+  background: var(--margin-line);
+  box-shadow: 5px 0 0 -0.5px var(--margin-line);
+}
+.notebook-edge::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 14px;
+  width: 30px;
+  background:
+    radial-gradient(circle at 15px 22px, #d9d1c3 0 7px, rgb(0 0 0 / 0.18) 7.5px, transparent 8.5px) 0 0 / 30px 56px repeat-y;
+}
+@media (max-width: 767px) { .notebook-edge { display: none; } }
+
+::selection { background: var(--highlight); color: var(--ink); }
+
+.font-hand { font-family: var(--font-hand); }
+.font-mono { font-family: var(--font-mono); }
+
+:focus-visible {
+  outline: 2px dashed var(--blue);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- doodles ---------- */
+.doodle {
+  display: block;
+  overflow: visible;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.doodle path { fill: none; }
+.doodle.stretch path { vector-effect: non-scaling-stroke; }
+
+/* line boil: 3 pre-rendered seeds, one visible at a time, "animated on threes" */
+.boil .frame { opacity: 0; }
+.boil .frame:first-child { opacity: 1; }
+.motion .boil.in-view .frame {
+  animation: boil 0.45s step-end infinite;
+}
+.motion .boil.in-view .frame:nth-child(2) { animation-delay: -0.15s; }
+.motion .boil.in-view .frame:nth-child(3) { animation-delay: -0.3s; }
+@keyframes boil {
+  0% { opacity: 1; }
+  33.333% { opacity: 0; }
+}
+
+/* mini band members idle-bob (on twos), wiggle when booped, and their props move */
+.character.mini { pointer-events: auto; transition: scale 220ms var(--ease-spring), rotate 220ms var(--ease-spring); }
+.motion .character.mini.in-view { animation: critter 1.8s step-end infinite; }
+@keyframes critter {
+  0% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .character.mini:hover { scale: 1.15; rotate: -8deg; }
+}
+.character path { transform-box: view-box; }
+.motion .character.in-view .zzz { animation: zzz 2.4s ease-in-out infinite; }
+.motion .character.in-view .float-heart { animation: floaty 1.6s ease-in-out infinite; }
+.motion .character.in-view .balloon { transform-origin: 50% 50%; animation: floaty 2.2s ease-in-out infinite; }
+.motion .character.in-view .steam { animation: steam 1.4s steps(3) infinite; }
+@keyframes zzz { 50% { transform: translate(3px, -4px); opacity: 0.5; } }
+@keyframes floaty { 50% { transform: translateY(-3px); } }
+@keyframes steam { 50% { transform: translateY(-2px); opacity: 0.4; } }
+
+/* draw-on: hidden until JS inks it */
+.motion [data-draw] path,
+.motion [data-hero-draw] path,
+.motion .name-underline path {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+.motion [data-draw] path.solid,
+.motion [data-hero-draw] path.solid { opacity: 0; }
+
+/* ---------- sketch box (rough border overlay) ---------- */
+.sketch-host { position: relative; isolation: isolate; }
+.sketch-box {
+  position: absolute;
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+.sketch-box path { vector-effect: non-scaling-stroke; fill: none; stroke-linecap: round; }
+.sketch-box .frame:nth-child(2) { opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .sketch-host:hover > .sketch-box .frame:first-child,
+  .sketch-host:focus-visible > .sketch-box .frame:first-child { opacity: 0; }
+  .sketch-host:hover > .sketch-box .frame:nth-child(2),
+  .sketch-host:focus-visible > .sketch-box .frame:nth-child(2) { opacity: 1; }
+}
+
+/* ---------- rough buttons ---------- */
+.btn-sketch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 1rem 0.45rem;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  isolation: isolate;
+  transition: transform 160ms var(--ease-out);
+}
+.btn-sketch:active { transform: scale(0.96); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-sketch:hover { transform: translateY(-2px) rotate(-1deg); }
+}
+.btn-sketch.solid { color: var(--paper); }
+.btn-sketch.solid::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 6px 10px 5px 12px / 10px 5px 12px 6px;
+  background: var(--ink);
+  z-index: -1;
+}
+
+/* ---------- masking tape ---------- */
+.tape {
+  position: absolute;
+  width: 110px;
+  height: 30px;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.18) 0 2px, transparent 2px 7px),
+    rgb(233 220 180 / 0.82);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  clip-path: polygon(0 8%, 5% 0, 9% 10%, 14% 2%, 86% 3%, 91% 10%, 95% 0, 100% 9%, 100% 91%, 96% 100%, 91% 90%, 86% 99%, 14% 97%, 9% 90%, 4% 100%, 0 92%, 2% 50%);
+  z-index: 5;
+}
+
+/* ---------- rubber stamp ---------- */
+.stamp {
+  --stamp: var(--coral);
+  display: inline-grid;
+  place-items: center;
+  padding: 0.3rem 0.6rem;
+  border: 2.5px solid var(--stamp);
+  border-radius: 6px;
+  outline: 1.5px solid var(--stamp);
+  outline-offset: 2px;
+  color: var(--stamp);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+  mask-size: 120px;
+}
+.stamp.round { border-radius: 999px; aspect-ratio: 1; padding: 0.5rem; }
+
+/* ---------- sticky note ---------- */
+.sticky {
+  position: relative;
+  background: var(--note, var(--note-yellow));
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.06),
+    0 10px 18px -8px rgb(60 40 10 / 0.35);
+  border-bottom-right-radius: 38px 6px;
+}
+
+/* ---------- index card ---------- */
+.index-card {
+  position: relative;
+  background:
+    linear-gradient(transparent 56px, var(--margin-line) 56px, var(--margin-line) 57.5px, transparent 57.5px),
+    repeating-linear-gradient(transparent 0 27px, rgb(70 110 170 / 0.14) 27px 28px),
+    var(--paper-2);
+  background-position: 0 0, 0 30px, 0 0;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.05),
+    0 18px 30px -18px rgb(50 35 15 / 0.45);
+  transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .index-card:hover {
+    transform: translateY(-6px) rotate(0deg) !important;
+    box-shadow:
+      0 1px 1px rgb(0 0 0 / 0.05),
+      0 30px 40px -18px rgb(50 35 15 / 0.5);
+  }
+}
+
+.tag-pill {
+  position: relative;
+  display: inline-block;
+  padding: 0.05rem 0.55rem 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--graphite);
+}
+
+/* marker highlight used inline */
+.marker {
+  background: linear-gradient(104deg, transparent 0.5%, var(--highlight) 2%, var(--highlight) 97%, transparent 99%);
+  background-size: 100% 62%;
+  background-position: 0 78%;
+  background-repeat: no-repeat;
+  padding: 0 0.15em;
+}
+
+/* pencil cursor for fine pointers */
+@media (hover: hover) and (pointer: fine) {
+  html.pencil-cursor, html.pencil-cursor * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg stroke='%2325221f' stroke-width='1.6' stroke-linejoin='round'%3E%3Cpath d='M3 29l2.5-7.5L22 5l5 5L10.5 26.5z' fill='%23ffd166'/%3E%3Cpath d='M22 5l2.5-2.5 5 5L27 10z' fill='%23e8604c'/%3E%3Cpath d='M3 29l2.5-7.5 5 5z' fill='%23f6e7c8'/%3E%3C/g%3E%3Cpath d='M3 29l1.2-3.6 2.4 2.4z' fill='%2325221f'/%3E%3C/svg%3E") 3 29, auto;
+  }
+  html.pencil-cursor a, html.pencil-cursor button, html.pencil-cursor [role="button"], html.pencil-cursor summary {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg stroke='%2325221f' stroke-width='1.6' stroke-linejoin='round'%3E%3Cpath d='M3 29l2.5-7.5L22 5l5 5L10.5 26.5z' fill='%23e8604c'/%3E%3Cpath d='M22 5l2.5-2.5 5 5L27 10z' fill='%23ffd166'/%3E%3Cpath d='M3 29l2.5-7.5 5 5z' fill='%23f6e7c8'/%3E%3C/g%3E%3Cpath d='M3 29l1.2-3.6 2.4 2.4z' fill='%2325221f'/%3E%3C/svg%3E") 3 29, pointer;
+  }
+}
+
+/* pre-hide hero bits only when motion is on (JS adds .motion before paint) */
+.motion [data-hero-hide] { opacity: 0; }
+.motion .hero-name .char { clip-path: inset(-50% 100% -50% -50%); }
+
+/* stamp slam on the timeline spine */
+.motion .spine-stamp { opacity: 0; transform: translate(var(--tx, -50%), 0) scale(1.8) rotate(var(--r, -8deg)); }
+.motion .spine-stamp.inked {
+  animation: slam 380ms var(--ease-out) forwards;
+}
+@keyframes slam {
+  0% { opacity: 0; transform: translate(var(--tx, -50%), 0) scale(1.8) rotate(var(--r, -8deg)); }
+  60% { opacity: 1; transform: translate(var(--tx, -50%), 0) scale(0.94) rotate(var(--r, -8deg)); }
+  100% { opacity: 1; transform: translate(var(--tx, -50%), 0) scale(1) rotate(var(--r, -8deg)); }
+}
+
+/* doodle pad strokes */
+.pad-stroke { transition: opacity 1.2s ease; }
+.pad-stroke.fade { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

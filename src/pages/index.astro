@@ -1,0 +1,109 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Doodle from "../components/Doodle.astro";
+import Character from "../components/Character.astro";
+import type { Acc, CharId, Expr } from "../lib/characters";
+import Hero from "../components/sections/Hero.astro";
+import Work from "../components/sections/Work.astro";
+import Jobs from "../components/sections/Jobs.astro";
+import Skills from "../components/sections/Skills.astro";
+import ClaudeCode from "../components/sections/ClaudeCode.astro";
+import Clubs from "../components/sections/Clubs.astro";
+import Contact from "../components/sections/Contact.astro";
+
+// scattered margin doodles, drifting at different scroll speeds (percent of page height)
+const margin = [
+  { name: "squiggle", top: 16, side: "right", size: 70, speed: 0.3, stroke: "var(--teal)" },
+  { name: "star", top: 22, side: "left", size: 34, speed: 0.5, fill: "var(--mustard)" },
+  { name: "sparkle", top: 49, side: "right", size: 40, speed: 0.35, fill: "var(--blue)" },
+  { name: "smiley", top: 58, side: "left", size: 40, speed: 0.25, stroke: "var(--graphite)" },
+  { name: "star", top: 84, side: "right", size: 30, speed: 0.5, fill: "var(--teal)" },
+  { name: "sparkle", top: 92, side: "left", size: 36, speed: 0.3, fill: "var(--purple)" },
+];
+
+// the band's mini selves, wandering the margins in different moods
+const critters: { id: CharId; expr?: Expr; acc?: Acc[]; top: number; side: string; size: number; speed: number; rotate: number }[] = [
+  { id: "clawd", expr: "surprised", acc: ["sweat"], top: 27, side: "right", size: 64, speed: 0.35, rotate: 6 },
+  { id: "muse", expr: "sleepy", acc: ["zzz"], top: 40, side: "left", size: 62, speed: 0.25, rotate: -5 },
+  { id: "codex", expr: "wink", top: 54, side: "right", size: 60, speed: 0.4, rotate: -8 },
+  { id: "openclaw", expr: "grin", acc: ["balloon"], top: 68, side: "left", size: 60, speed: 0.3, rotate: 7 },
+  { id: "grok", expr: "love", acc: ["heart"], top: 79, side: "right", size: 56, speed: 0.35, rotate: -6 },
+];
+---
+
+<Base>
+  <Nav />
+  <main id="main">
+    <div class="margin-doodles" aria-hidden="true">
+      {
+        margin.map((m, i) => (
+          <div class="md" style={`top:${m.top}%;${m.side}:${m.side === "left" ? "clamp(0.6rem, 2.2vw, 2.4rem)" : "clamp(2.4rem, 5vw, 5rem)"}`}>
+            <Doodle
+              name={m.name}
+              size={m.size}
+              stroke={m.stroke ?? "var(--ink)"}
+              fill={m.fill}
+              sw={2.4}
+              speed={m.speed}
+              seed={`margin-${i}`}
+              rotate={(i * 47) % 40 - 20}
+            />
+          </div>
+        ))
+      }
+      {
+        critters.map((c) => (
+          <div class="md" style={`top:${c.top}%;${c.side}:${c.side === "left" ? "clamp(0.4rem, 1.6vw, 1.8rem)" : "clamp(3.2rem, 5.5vw, 5.6rem)"}`}>
+            <Character id={c.id} mini expr={c.expr} acc={c.acc} size={c.size} speed={c.speed} rotate={c.rotate} />
+          </div>
+        ))
+      }
+    </div>
+    <Hero />
+    <Work />
+    <Jobs />
+    <Skills />
+    <Clubs />
+    <ClaudeCode />
+    <Contact />
+  </main>
+  <svg class="pad" data-pad aria-hidden="true"></svg>
+  <p class="pad-hint font-hand" data-pad-hint>draw anywhere! (esc to stop)</p>
+</Base>
+
+<style>
+  main { position: relative; }
+  .margin-doodles { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .md { position: absolute; opacity: 0.85; }
+  @media (max-width: 1100px) { .margin-doodles { display: none; } }
+  .pad {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 55;
+    pointer-events: none;
+    overflow: visible;
+    touch-action: none;
+  }
+  :global(html.drawing) .pad { pointer-events: auto; }
+  .pad-hint {
+    position: fixed;
+    left: 50%;
+    bottom: 1.5rem;
+    z-index: 70;
+    translate: -50% 0;
+    padding: 0.4rem 1.1rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 1.4rem;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+    transform: translateY(10px);
+  }
+  :global(html.drawing) .pad-hint { opacity: 1; transform: translateY(0); }
+  @media (max-width: 767px) { .pad-hint { bottom: 4.2rem; } }
+</style>

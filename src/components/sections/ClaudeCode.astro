@@ -1,0 +1,492 @@
+---
+import Doodle from "../Doodle.astro";
+import SketchBox from "../SketchBox.astro";
+import SectionTitle from "../SectionTitle.astro";
+import Character from "../Character.astro";
+import { siFigma, siGithub } from "simple-icons";
+
+// One scripted session. `step` is when the line appears as you scroll (0–11).
+type Line = { step: number; kind: string; text: string };
+const lines: Line[] = [
+  { step: 1, kind: "user", text: "> make my portfolio feel hand-drawn" },
+  { step: 2, kind: "plan-h", text: "● Here's the plan:" },
+  { step: 2, kind: "plan", text: "  1. sketch every doodle with Rough.js" },
+  { step: 2, kind: "plan", text: "  2. let a pencil write my name" },
+  { step: 2, kind: "plan", text: "  3. teach the band to play" },
+  { step: 2, kind: "ask", text: "  ❯ Yes, and switch to auto mode" },
+  { step: 4, kind: "tool", text: "● Skill(animate)" },
+  { step: 4, kind: "out", text: "  ⎿  loaded skills/animate/SKILL.md" },
+  { step: 5, kind: "tool", text: "● Edit(src/components/BandStage.astro)" },
+  { step: 5, kind: "diff", text: "  ⎿  +234 −0" },
+  { step: 6, kind: "mcp", text: "● playwright · browser_take_screenshot (MCP)" },
+  { step: 6, kind: "out", text: "  ⎿  hero.png looks right" },
+  { step: 7, kind: "mcp", text: "● figma · get_design_context (MCP)" },
+  { step: 7, kind: "out", text: "  ⎿  pulled 6 frames" },
+  { step: 8, kind: "spin", text: "" },
+  { step: 9, kind: "warn", text: "⚠ Context low · auto-compacting conversation…" },
+  { step: 9, kind: "out", text: "  ⎿  ✓ compacted, picking up where we left off" },
+  { step: 10, kind: "tool", text: "● Bash(vercel deploy --prod)" },
+  { step: 10, kind: "diff", text: "  ⎿  ✓ Ready in 13s" },
+  { step: 11, kind: "done", text: "✻ Done. 6 files changed, and the band is playing." },
+  { step: 11, kind: "muted", text: "  5-hour limit reached ∙ resets 4am" },
+];
+
+const servers = [
+  { id: "playwright", name: "playwright", what: "drives a real browser", icon: null },
+  { id: "figma", name: "figma", what: "reads my designs", icon: siFigma.path },
+  { id: "github", name: "github", what: "issues, PRs, code search", icon: siGithub.path },
+];
+const skills = [
+  { id: "no-ai-slop", desc: "edit drafts so they sound human" },
+  { id: "emil-design-eng", desc: "UI polish and the details that make it feel right" },
+  { id: "animate", desc: "build an animation, deciding what should move first" },
+];
+---
+
+<section id="hobby" class="cc" aria-labelledby="hobby-title">
+  <div class="wrap">
+    <SectionTitle
+      id="hobby"
+      page={6}
+      kicker="hobby · after hours"
+      title="Claude Code, after dark"
+      note="My favourite hobby lives in a terminal. Scroll and watch a session play out, with my notes in the margins."
+      color="#d97757"
+      doodle="terminal"
+    />
+  </div>
+
+  <div class="stage" data-cc>
+    <!-- left: modes -->
+    <div class="col left">
+      <div class="note plan-note" data-cc-plan>
+        <Doodle name="pause" size={40} fill="var(--teal)" sw={3} seed="cc-pause" />
+        <p class="font-hand">
+          <strong>plan mode</strong><br />
+          it reads, asks questions and writes a plan before it touches a single file. I poke holes in it first.
+        </p>
+        <Doodle name="arrow" size={46} sw={2.6} stroke="var(--graphite)" boil={false} rotate={-10} seed="cc-a1" class="note-arrow" />
+      </div>
+      <div class="note auto-note" data-cc-auto>
+        <Doodle name="ff" size={42} fill="#d97757" sw={3} seed="cc-ff" />
+        <p class="font-hand">
+          <strong>auto mode</strong><br />
+          shift+tab, then let it cook. edits land without asking me every time.
+        </p>
+        <Doodle name="arrow" size={46} sw={2.6} stroke="var(--graphite)" boil={false} rotate={20} seed="cc-a2" class="note-arrow" />
+      </div>
+    </div>
+
+    <!-- centre: the terminal -->
+    <div class="term-wrap">
+      <span class="term-pix" aria-hidden="true"><Character id="clawd" mini expr="cool" acc={["headset"]} size="100%" /></span>
+      <div class="term sketch-host" role="img" aria-label="An animated Claude Code session: plan mode, auto mode, skills, MCP tool calls, auto-compaction and a deploy.">
+        <SketchBox seed="term" sw={2} stroke="var(--ink)" />
+        <div class="term-bar font-mono">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>~/thomas-portfolio · claude</span>
+        </div>
+        <div class="term-body font-mono" aria-hidden="true">
+          <div class="welcome">
+            <span class="spark">✻</span> Welcome to <b>Claude Code</b>!
+            <small>/help for help · cwd: ~/thomas-portfolio</small>
+          </div>
+          {
+            lines.map((l) =>
+              l.kind === "spin" ? (
+                <div class="ln k-spin" data-step={l.step}>
+                  <span class="spark spin">✻</span> <span data-verb>Doodling</span>… (<span data-secs>0</span>s · ↓ <span data-tokens>0.0k</span> tokens · esc to interrupt)
+                </div>
+              ) : (
+                <div class={`ln k-${l.kind}`} data-step={l.step}>{l.text}</div>
+              ),
+            )
+          }
+        </div>
+        <div class="term-status font-mono" aria-hidden="true">
+          <span class="modes">
+            <span class="mode m0">? for shortcuts</span>
+            <span class="mode m1">⏸ plan mode on <em>(shift+tab to cycle)</em></span>
+            <span class="mode m2">⏵⏵ auto mode on <em>(shift+tab to cycle)</em></span>
+          </span>
+          <span class="ctx-left"><span class="ctx-long">Context left until auto-compact: </span><span class="ctx-short">ctx left </span><b data-ctx-left>98</b>%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: MCP servers + skills -->
+    <div class="col right">
+      <div class="mcp">
+        <p class="col-title font-hand">
+          <Doodle name="plug" size={30} fill="var(--mustard)" sw={3.4} boil={false} seed="cc-plug" /> MCP servers
+        </p>
+        <ul>
+          {
+            servers.map((s) => (
+              <li class="srv sketch-host" data-srv={s.id}>
+                <SketchBox seed={`srv-${s.id}`} sw={1.5} />
+                <span class="cable" aria-hidden="true"><i class="packet" /></span>
+                {s.icon ? (
+                  <svg viewBox="0 0 24 24" class="srv-icon" aria-hidden="true"><path d={s.icon} /></svg>
+                ) : (
+                  <Doodle name="theater" size={24} sw={5} fill="var(--teal)" boil={false} seed="srv-pw" />
+                )}
+                <span class="srv-text">
+                  <b class="font-mono">{s.name}</b>
+                  <small class="font-hand">{s.what}</small>
+                </span>
+                <span class="led" aria-hidden="true" />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="deck-wrap">
+        <p class="col-title font-hand">
+          <Doodle name="book" size={30} fill="var(--coral)" sw={3.4} boil={false} seed="cc-book" /> skills/
+        </p>
+        <div class="deck">
+          {
+            skills.map((s, i) => (
+              <div class="skill-card" style={`--i:${i}`} data-skill-card={s.id}>
+                <p class="font-mono sc-path">{s.id}/<b>SKILL.md</b></p>
+                <p class="font-mono sc-fm">---<br />name: {s.id}<br />description: {s.desc}<br />---</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- bottom: gauges -->
+    <div class="gauges">
+      <div class="gauge ctx sketch-host">
+        <SketchBox seed="g-ctx" sw={1.6} />
+        <p class="g-title font-hand">context window <span class="font-mono">200K</span></p>
+        <div class="ctx-track">
+          <div class="ctx-fill" data-ctx-fill></div>
+          <span class="ctx-ticks" aria-hidden="true"></span>
+        </div>
+        <p class="g-read">
+          <span class="big font-hand"><span data-ctx>2</span>%</span>
+          <span class="font-mono small">↓ <span data-tokens-total>4.0k</span> tokens</span>
+        </p>
+        <span class="squish font-hand" data-squish>squish! auto-compacted</span>
+      </div>
+
+      <div class="gauge usage sketch-host">
+        <SketchBox seed="g-use" sw={1.6} />
+        <p class="g-title font-hand">usage limit <span class="font-mono">5-hour window</span></p>
+        <div class="segs">
+          {[0, 1, 2, 3, 4].map((i) => <span class="seg" data-seg={i} />)}
+        </div>
+        <p class="g-read font-mono small">resets at 4am</p>
+        <span class="moon" data-moon aria-hidden="true">
+          <Doodle name="moon" size={46} fill="var(--mustard)" sw={2.6} seed="cc-moon" />
+          <span class="font-hand">bedtime, apparently</span>
+        </span>
+      </div>
+
+      <div class="gauge server sketch-host">
+        <SketchBox seed="g-srv" sw={1.6} />
+        <div class="rack">
+          <Doodle name="server" size={64} fill="var(--blue)" sw={2.6} seed="cc-server" />
+          <span class="leds" aria-hidden="true"><i></i><i></i><i></i></span>
+        </div>
+        <p class="g-title font-hand">terminal server<br /><small>agents keep working after I close the laptop</small></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cc { position: relative; padding: clamp(4rem, 10vw, 7rem) 0 clamp(2rem, 5vw, 3rem); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(1.25rem, 6vw, 5rem) 0 clamp(1.25rem, 10vw, 8.5rem); }
+
+  .stage {
+    --claude: #d97757;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr) minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    gap: 1.2rem clamp(1rem, 2.5vw, 2rem);
+    max-width: 1400px;
+    height: 100svh;
+    margin: 0 auto;
+    padding: 4.8rem clamp(1.25rem, 5vw, 4.5rem) 1.4rem clamp(1.25rem, 8vw, 7.5rem);
+    align-items: center;
+  }
+
+  /* ---------- terminal ---------- */
+  .term-wrap { position: relative; align-self: stretch; display: flex; }
+  .term-pix { position: absolute; right: 1.2rem; top: -46px; width: 60px; z-index: 3; }
+  .term {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #211e1b;
+    color: #efe9dd;
+    border-radius: 12px;
+    box-shadow: 0 24px 40px -22px rgb(30 20 10 / 0.6);
+    min-height: 0;
+  }
+  .term :global(.sketch-box) { inset: -5px; width: calc(100% + 10px); height: calc(100% + 10px); }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.72rem;
+    color: #a59d91;
+    border-bottom: 1.5px dashed rgb(239 233 221 / 0.18);
+  }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 11px; height: 11px; border-radius: 50%; background: #e8604c; }
+  .dots i:nth-child(2) { background: #e0a526; }
+  .dots i:nth-child(3) { background: #2a9d8f; }
+  .term-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.2rem;
+    padding: 0.9rem 1rem;
+    overflow: hidden;
+    font-size: clamp(0.66rem, 0.95vw, 0.82rem);
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .welcome {
+    margin-bottom: 0.5rem;
+    padding: 0.55rem 0.8rem;
+    border: 1.5px solid var(--claude);
+    border-radius: 8px;
+  }
+  .welcome small { display: block; color: #a59d91; font-size: 0.9em; margin-top: 0.15rem; }
+  .spark { color: var(--claude); }
+  .spin { display: inline-block; }
+  .motion .spin { animation: spark 1s steps(6) infinite; }
+  @keyframes spark { to { rotate: 360deg; } }
+  .k-user { color: #fff; background: rgb(255 255 255 / 0.06); padding: 0.15rem 0.4rem; border-radius: 4px; margin: 0.3rem 0; }
+  .k-plan-h, .k-tool, .k-mcp { color: #fff; }
+  .k-tool::first-letter, .k-plan-h::first-letter { color: #2a9d8f; }
+  .k-mcp::first-letter { color: #e0a526; }
+  .k-plan { color: #cfc7ba; }
+  .k-ask { color: var(--claude); }
+  .k-out { color: #a59d91; }
+  .k-diff { color: #7fd19b; }
+  .k-spin { color: var(--claude); }
+  .k-warn { color: #e0a526; }
+  .k-done { color: #fff; font-weight: 700; margin-top: 0.3rem; }
+  .k-done::first-letter { color: var(--claude); }
+  .k-muted { color: #8a8378; }
+
+  .term-status {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 1rem 0.7rem;
+    font-size: 0.66rem;
+    color: #a59d91;
+    border-top: 1.5px dashed rgb(239 233 221 / 0.18);
+  }
+  .modes { position: relative; display: grid; }
+  .mode { grid-area: 1 / 1; white-space: nowrap; }
+  .mode em { font-style: normal; opacity: 0.6; }
+  .m1 { color: #2a9d8f; opacity: 0; }
+  .m2 { color: var(--claude); opacity: 0; }
+  .ctx-left { white-space: nowrap; }
+  .ctx-left b { color: #efe9dd; }
+  .ctx-short { display: none; }
+  @media (max-width: 640px) {
+    .ctx-long, .mode em { display: none; }
+    .ctx-short { display: inline; }
+  }
+
+  /* ---------- side columns ---------- */
+  .col { display: flex; flex-direction: column; gap: 1.6rem; align-self: center; }
+  .note { position: relative; display: grid; grid-template-columns: auto 1fr; gap: 0.6rem; align-items: start; }
+  .note p { font-size: 1.28rem; line-height: 1.15; color: var(--graphite); }
+  .note strong {
+    font-size: 1.7rem;
+    color: var(--ink);
+    background: linear-gradient(104deg, transparent 1%, var(--highlight) 3%, var(--highlight) 97%, transparent 99%) no-repeat 0 80% / 0% 60%;
+    transition: background-size 500ms var(--ease-out);
+  }
+  .note[data-on="1"] strong { background-size: 100% 60%; }
+  .note :global(.note-arrow) { position: absolute; right: -2.4rem; top: 0.6rem; }
+  .note { transition: transform 300ms var(--ease-out), opacity 300ms; }
+  .note:not([data-on="1"]) { opacity: 0.55; }
+  .note[data-on="1"] { transform: translateX(6px); }
+
+  .col-title { display: flex; align-items: center; gap: 0.4rem; font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .mcp ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
+  .srv {
+    position: relative;
+    display: grid;
+    grid-template-columns: 26px 1fr 10px;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.7rem;
+    background: var(--paper-2);
+    transition: rotate 300ms var(--ease-spring), transform 300ms var(--ease-out);
+  }
+  .srv-icon { width: 22px; height: 22px; fill: var(--ink); }
+  .srv-text b { display: block; font-size: 0.78rem; }
+  .srv-text small { font-size: 1.05rem; color: var(--graphite); line-height: 1; }
+  .led { width: 9px; height: 9px; border-radius: 50%; background: #cfc7ba; box-shadow: inset 0 0 0 1.5px rgb(0 0 0 / 0.2); transition: background-color 200ms; }
+  .cable {
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    width: clamp(1rem, 2.4vw, 2rem);
+    border-top: 2px dashed var(--pencil);
+  }
+  .packet {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--claude);
+    opacity: 0;
+  }
+  .srv[data-on="1"] { rotate: -2deg; transform: translateX(-4px); }
+  .srv[data-on="1"] .led { background: #3ecf6e; box-shadow: 0 0 8px #3ecf6e; }
+  .motion .srv[data-on="1"] .packet { animation: packet 0.8s linear infinite; }
+  @keyframes packet {
+    0% { right: 0; opacity: 1; }
+    100% { right: 100%; opacity: 1; }
+  }
+
+  .deck { position: relative; height: 150px; }
+  .skill-card {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    background: var(--paper-2);
+    border: 1.5px solid var(--ink);
+    border-radius: 4px 10px 5px 9px;
+    box-shadow: 0 10px 16px -12px rgb(40 25 10 / 0.5);
+    transform: translate(calc(var(--i) * 8px), calc(var(--i) * 12px)) rotate(calc((var(--i) - 1) * 3deg));
+    transition: transform 420ms var(--ease-spring), box-shadow 300ms;
+  }
+  .sc-path { font-size: 0.76rem; color: var(--graphite); }
+  .sc-path b { color: var(--ink); }
+  .sc-fm { margin-top: 0.4rem; font-size: 0.62rem; line-height: 1.5; color: var(--pencil); }
+  @media (hover: hover) and (pointer: fine) {
+    .deck:hover .skill-card { transform: translate(calc(var(--i) * 26px - 20px), calc(var(--i) * 34px - 10px)) rotate(calc((var(--i) - 1) * 6deg)); }
+  }
+  .skill-card[data-on="1"] {
+    transform: translate(-26px, -34px) rotate(-7deg) !important;
+    box-shadow: 0 22px 26px -14px rgb(40 25 10 / 0.55);
+    border-color: var(--claude);
+  }
+
+  /* ---------- gauges ---------- */
+  .gauges {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+  }
+  .gauge { position: relative; padding: 0.8rem 1rem 0.9rem; background: rgb(255 253 248 / 0.9); }
+  .g-title { font-size: 1.4rem; font-weight: 700; line-height: 1.05; }
+  .g-title .font-mono, .g-title small { font-size: 0.7rem; font-weight: 400; color: var(--pencil); margin-left: 0.3rem; }
+  .g-title small { font-family: var(--font-hand); font-size: 1.05rem; margin: 0; }
+  .ctx-track {
+    position: relative;
+    height: 22px;
+    margin-top: 0.5rem;
+    border: 2px solid var(--ink);
+    border-radius: 6px 12px 7px 10px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .ctx-fill {
+    position: absolute;
+    inset: 0;
+    transform-origin: 0 50%;
+    transform: scaleX(0.02);
+    background: repeating-linear-gradient(-45deg, var(--claude) 0 5px, #ecae94 5px 9px);
+  }
+  .ctx-fill.hot { background: repeating-linear-gradient(-45deg, #e8604c 0 5px, #f3a08f 5px 9px); }
+  .ctx-ticks {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 1.5px), rgb(37 34 31 / 0.35) calc(10% - 1.5px) 10%);
+  }
+  .g-read { display: flex; align-items: baseline; gap: 0.8rem; margin-top: 0.3rem; }
+  .big { font-size: 2rem; font-weight: 700; line-height: 1; }
+  .small { font-size: 0.7rem; color: var(--graphite); }
+  .squish {
+    position: absolute;
+    right: 1rem;
+    top: -0.9rem;
+    padding: 0.05rem 0.6rem 0.15rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--teal);
+    border-radius: 4px 9px 5px 10px;
+    rotate: 5deg;
+    opacity: 0;
+    scale: 0.5;
+    transition: opacity 200ms, scale 350ms var(--ease-spring);
+  }
+  .squish[data-on="1"] { opacity: 1; scale: 1; }
+
+  .segs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 0.55rem; }
+  .seg {
+    height: 18px;
+    border: 2px solid var(--ink);
+    border-radius: 4px 7px 3px 6px;
+    background: var(--paper);
+    transition: background-color 250ms;
+  }
+  .seg[data-on="1"] { background: var(--claude); }
+  .seg:last-child[data-on="1"] { background: #e8604c; }
+  .moon {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 1.1rem;
+    color: var(--graphite);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 300ms, transform 400ms var(--ease-spring);
+  }
+  .moon[data-on="1"] { opacity: 1; transform: translateY(0); }
+
+  .server { display: flex; align-items: center; gap: 0.8rem; }
+  .rack { position: relative; flex: none; }
+  .leds { position: absolute; left: 44px; top: 8px; display: grid; gap: 11px; }
+  .leds i { width: 6px; height: 6px; border-radius: 50%; background: #3ecf6e; box-shadow: 0 0 6px #3ecf6e; }
+  .motion .leds i { animation: led 1.3s steps(2) infinite; }
+  .leds i:nth-child(2) { animation-delay: -0.4s; }
+  .leds i:nth-child(3) { animation-delay: -0.9s; }
+  @keyframes led { 50% { opacity: 0.25; } }
+
+  @media (max-width: 1100px) {
+    .stage {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      height: auto;
+      padding-top: 1rem;
+    }
+    .term-wrap { order: 1; }
+    .term { min-height: 440px; }
+    .col.right { order: 2; }
+    .col.left { order: 3; }
+    .gauges { order: 4; grid-template-columns: 1fr; }
+    .note :global(.note-arrow), .cable { display: none; }
+    .note:not([data-on="1"]) { opacity: 1; }
+  }
+</style>
