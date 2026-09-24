@@ -9,6 +9,7 @@ Astro 7 (static) + Tailwind v4 + GSAP/ScrollTrigger + Rough.js + rough-notation 
 - `npm run sync:projects -- --days 7` — pull recently-committed public repos from GitHub (needs `gh` auth),
   download README media into `public/projects/<repo>/`, write `src/content/projects.json`.
   Hand edits to `title`, `blurb`, `tags`, `doodle`, `hidden`, `order` survive re-syncs.
+  Media files that already exist are skipped — add `--force` to re-download (e.g. after a repo's README video changes).
 - Deploy: `vercel deploy --prod --yes` (project `thomas-portfolio`, live at https://thomas-portfolio-ruby.vercel.app)
 
 ## Where things live

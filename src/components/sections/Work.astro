@@ -4,7 +4,7 @@ import SketchBox from "../SketchBox.astro";
 import SectionTitle from "../SectionTitle.astro";
 import projectsRaw from "../../content/projects.json";
 import Character from "../Character.astro";
-import { projectDoodles, projectNotes } from "../../content/portfolio";
+import { projectDoodles, projectNotes, freshTags } from "../../content/portfolio";
 import type { Acc, CharId, Expr } from "../../lib/characters";
 
 // band members peeking over a few cards, dressed for the project
@@ -38,6 +38,7 @@ const month = (iso: string) => {
   return `${MONTHS[d.getUTCMonth()]} '${String(d.getUTCFullYear()).slice(2)}`;
 };
 const palette = ["var(--coral)", "var(--teal)", "var(--blue)", "var(--purple)", "var(--mustard)"];
+const freshFallback = ["fresh ink!", "brand new!", "just landed!", "warm off the pen!"];
 ---
 
 <section id="work" class="work" aria-labelledby="work-title">
@@ -106,7 +107,7 @@ const palette = ["var(--coral)", "var(--teal)", "var(--blue)", "var(--purple)", 
                   <div class="body">
                     <h3 class="title font-hand">
                       {p.title}
-                      {fresh && <span class="fresh font-hand">fresh ink!</span>}
+                      {fresh && <span class="fresh font-hand">{freshTags[p.repo] ?? freshFallback[i % freshFallback.length]}</span>}
                     </h3>
                     <p class="blurb">{p.blurb}</p>
                     <ul class="tags" aria-label="Tech">

@@ -33,13 +33,13 @@
       "generative-ai"
     ],
     "created": "2026-09-23T18:46:47Z",
-    "pushed": "2026-09-23T18:46:56Z",
+    "pushed": "2026-09-24T00:26:44Z",
     "url": "https://github.com/duc-minh-droid/neurocraft",
     "live": null,
     "media": {
       "kind": "video",
       "video": "/projects/neurocraft/demo.mp4",
-      "alt": "Typing 'a castle on that hill in the distance' makes a castle appear; then a dragon circles it; then the world turns to golden sunset"
+      "alt": "Typing 'a castle on the hill over there' makes a castle appear on a hill; the dragon grows and circles it; a wolf pack roams nearby; the world turns to golden sunset"
     }
   },
   {
@@ -92,13 +92,14 @@
       "Python"
     ],
     "created": "2026-09-22T13:45:13Z",
-    "pushed": "2026-09-22T13:45:17Z",
+    "pushed": "2026-09-24T08:12:39Z",
     "url": "https://github.com/duc-minh-droid/jevis",
-    "live": null,
+    "live": "https://jevis-pied.vercel.app",
     "media": {
-      "kind": "image",
+      "kind": "video",
+      "video": "/projects/jevis/demo.mp4",
       "poster": "/projects/jevis/poster.png",
-      "alt": "the jevis command bar"
+      "alt": "jevis driving Calculator and Notepad from four spoken commands"
     }
   },
   {
@@ -138,6 +139,43 @@
       "gif": "/projects/leetgraph/demo.gif",
       "poster": "/projects/leetgraph/poster.png",
       "alt": "Solving a node: confetti, rating tick, new paths unlock"
+    }
+  },
+  {
+    "repo": "slay-lc",
+    "title": "slay-lc",
+    "hidden": true,
+    "blurb": "",
+    "tags": [
+      "TypeScript"
+    ],
+    "created": "2026-08-26T15:54:15Z",
+    "pushed": "2026-08-26T15:54:19Z",
+    "url": "https://github.com/duc-minh-droid/slay-lc",
+    "live": null,
+    "media": {
+      "kind": "none",
+      "alt": "slay-lc demo"
+    }
+  },
+  {
+    "repo": "packetsio",
+    "title": "packetsio",
+    "blurb": "A tick-based network packet simulator: Rust engine compiled to WebAssembly, packets as glowing particles. Switch between OSPF, adaptive and RIP routing and watch queues fill and tail-drop.",
+    "tags": [
+      "JavaScript",
+      "TypeScript",
+      "Rust"
+    ],
+    "created": "2026-08-15T10:06:08Z",
+    "pushed": "2026-09-24T07:56:39Z",
+    "url": "https://github.com/duc-minh-droid/packetsio",
+    "live": "https://packetsio-wcux-eta.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/packetsio/demo.mp4",
+      "poster": "/projects/packetsio/poster.png",
+      "alt": "packetsio demo"
     }
   },
   {
@@ -310,6 +348,26 @@
       "video": "/projects/JsonParser/demo.mp4",
       "poster": "/projects/JsonParser/poster.png",
       "alt": "Visualizer replaying a parse: source cursor on the left, call stack in the middle, JsonValue tree on the right"
+    }
+  },
+  {
+    "repo": "trippai",
+    "title": "TrippAI",
+    "blurb": "Pick a city and it tells you which week of the next year to go. Prophet forecasts for weather, crowds and price, reweighted live on a month-by-month heatmap.",
+    "tags": [
+      "TypeScript",
+      "Python",
+      "JavaScript"
+    ],
+    "created": "2025-10-27T22:47:21Z",
+    "pushed": "2026-09-24T08:01:08Z",
+    "url": "https://github.com/duc-minh-droid/trippai",
+    "live": "https://trippai.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/trippai/demo.mp4",
+      "poster": "/projects/trippai/poster.png",
+      "alt": "TrippAI demo"
     }
   }
 ]

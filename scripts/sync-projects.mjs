@@ -4,7 +4,9 @@
 // src/content/projects.json. Hand edits to `title`, `blurb`, `tags`, `doodle`,
 // `hidden` and `order` in projects.json survive re-syncs.
 //
-// usage: npm run sync:projects -- [--days 7] [--user duc-minh-droid]
+// usage: npm run sync:projects -- [--days 7] [--user duc-minh-droid] [--force]
+// --force re-downloads media even when the file already exists (use it after
+// updating a recording in a repo's README — same filename won't refresh otherwise).
 
 import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync, readFileSync, existsSync, statSync } from "node:fs";
@@ -15,6 +17,7 @@ const args = Object.fromEntries(
 );
 const USER = args.user ?? "duc-minh-droid";
 const DAYS = Number(args.days ?? 7);
+const FORCE = "force" in args;
 const SINCE = new Date(Date.now() - DAYS * 864e5).toISOString();
 const OUT_JSON = "src/content/projects.json";
 const PRESERVE = ["title", "blurb", "tags", "doodle", "hidden", "order"];
@@ -62,7 +65,7 @@ function firstParagraph(md) {
 }
 
 async function download(url, dest) {
-  if (existsSync(dest) && statSync(dest).size > 0) return true;
+  if (!FORCE && existsSync(dest) && statSync(dest).size > 0) return true;
   const res = await fetch(url, { redirect: "follow" });
   if (!res.ok) return false;
   writeFileSync(dest, Buffer.from(await res.arrayBuffer()));

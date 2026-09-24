@@ -263,6 +263,18 @@ export const projectNotes: Record<string, string> = {
   MemoryManagement: "byte by byte",
   OrderBook: "price-time priority",
   JsonParser: "watch it parse",
+  packetsio: "packets as particles",
+  trippai: "when to go, not where",
+};
+
+// Sticker on projects less than a week old — a different one per project.
+export const freshTags: Record<string, string> = {
+  algoscope: "newest toy!",
+  neurocraft: "hot off the desk!",
+  "hollow-hand": "ink's still wet!",
+  jevbrowser: "just shipped!",
+  jevis: "new scribble!",
+  backlot: "still drying!",
 };
 
 // Margin doodle per project (falls back to "star").
@@ -283,4 +295,6 @@ export const projectDoodles: Record<string, string> = {
   MemoryManagement: "blocks",
   OrderBook: "candles",
   JsonParser: "braces",
+  packetsio: "arrows",
+  trippai: "plane",
 };
