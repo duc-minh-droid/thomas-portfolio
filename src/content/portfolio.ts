@@ -249,6 +249,7 @@ export const skillGroups: SkillGroup[] = [
 
 // Handwritten margin note beside each project on the timeline.
 export const projectNotes: Record<string, string> = {
+  jevbox: "two fighters, one Jev",
   algoscope: "watch algorithms think",
   neurocraft: "type it, see it",
   "hollow-hand": "the dealer learns you",
@@ -278,6 +279,7 @@ export const projectNotes: Record<string, string> = {
 
 // Sticker on projects less than a week old — a different one per project.
 export const freshTags: Record<string, string> = {
+  jevbox: "fresh out the ring!",
   algoscope: "newest toy!",
   neurocraft: "hot off the desk!",
   "hollow-hand": "ink's still wet!",
@@ -299,6 +301,7 @@ export const projectKinds: Record<string, string> = {
 
 // Margin doodle per project (falls back to "star").
 export const projectDoodles: Record<string, string> = {
+  jevbox: "bolt",
   algoscope: "nodes",
   neurocraft: "castle",
   "hollow-hand": "card",

@@ -1,5 +1,24 @@
 [
   {
+    "repo": "jevbox",
+    "title": "jevbox",
+    "blurb": "A 3D boxing game where Jev calls every shot live. Pick two fighters Street Fighter-style, hit FIGHT, and watch them go at it.",
+    "tags": [
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2026-09-24T16:45:10Z",
+    "pushed": "2026-09-24T16:47:35Z",
+    "url": "https://github.com/duc-minh-droid/jevbox",
+    "live": "https://jevbox.vercel.app",
+    "media": {
+      "kind": "gif",
+      "gif": "/projects/jevbox/demo.gif",
+      "poster": "/projects/jevbox/poster.png",
+      "alt": "JEVBOX demo: exchange, super move, knockdown, TKO"
+    }
+  },
+  {
     "repo": "algoscope",
     "title": "Algoscope",
     "blurb": "27 classic algorithms drawn live in SVG, with the code lighting up line by line next to them. Pause, rewind, set breakpoints, or feed it your own test cases.",
@@ -456,10 +475,10 @@
     "url": "https://github.com/duc-minh-droid/LeadGreen",
     "live": "https://leadgreen.vercel.app",
     "media": {
-      "kind": "video",
-      "video": "/projects/LeadGreen/demo.mp4",
+      "kind": "gif",
+      "gif": "/projects/LeadGreen/demo.gif",
       "poster": "/projects/LeadGreen/poster.png",
-      "alt": "LeadGreen demo: scanning a QR, posting a photo, earning points, growing the plant"
+      "alt": "LeadGreen demo"
     }
   },
   {
