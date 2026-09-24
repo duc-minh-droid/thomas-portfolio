@@ -247,6 +247,7 @@ export const skillGroups: SkillGroup[] = [
 
 // Handwritten margin note beside each project on the timeline.
 export const projectNotes: Record<string, string> = {
+  algoscope: "watch algorithms think",
   neurocraft: "type it, see it",
   "hollow-hand": "the dealer learns you",
   jevbrowser: "never hits submit",
@@ -266,6 +267,7 @@ export const projectNotes: Record<string, string> = {
 
 // Margin doodle per project (falls back to "star").
 export const projectDoodles: Record<string, string> = {
+  algoscope: "nodes",
   neurocraft: "castle",
   "hollow-hand": "card",
   jevbrowser: "cursor",

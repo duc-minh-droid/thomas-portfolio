@@ -18,6 +18,8 @@ const DAYS = Number(args.days ?? 7);
 const SINCE = new Date(Date.now() - DAYS * 864e5).toISOString();
 const OUT_JSON = "src/content/projects.json";
 const PRESERVE = ["title", "blurb", "tags", "doodle", "hidden", "order"];
+// repos that aren't projects to show (this site itself)
+const SKIP = new Set(["thomas-portfolio"]);
 
 const gh = (path, raw = false) =>
   execFileSync("gh", ["api", path, ...(raw ? ["-H", "Accept: application/vnd.github.raw"] : [])], {
@@ -71,7 +73,7 @@ const existing = existsSync(OUT_JSON) ? JSON.parse(readFileSync(OUT_JSON, "utf8"
 const prev = Object.fromEntries(existing.map((p) => [p.repo, p]));
 
 const repos = ghJson(`users/${USER}/repos?per_page=100&sort=pushed&type=owner`).filter(
-  (r) => !r.fork && !r.private && r.pushed_at >= SINCE,
+  (r) => !r.fork && !r.private && !SKIP.has(r.name) && r.pushed_at >= SINCE,
 );
 
 const projects = [];

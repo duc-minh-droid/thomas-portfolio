@@ -1,5 +1,27 @@
 [
   {
+    "repo": "algoscope",
+    "title": "Algoscope",
+    "blurb": "27 classic algorithms drawn live in SVG, with the code lighting up line by line next to them. Pause, rewind, set breakpoints, or feed it your own test cases.",
+    "tags": [
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "algorithms",
+      "data-structures"
+    ],
+    "created": "2026-09-23T23:53:10Z",
+    "pushed": "2026-09-23T23:54:32Z",
+    "url": "https://github.com/duc-minh-droid/algoscope",
+    "live": "https://duc-minh-droid.github.io/algoscope/",
+    "media": {
+      "kind": "gif",
+      "gif": "/projects/algoscope/demo.gif",
+      "poster": "/projects/algoscope/poster.png",
+      "alt": "Algoscope landing page with a live BFS graph and bubble-sort bars"
+    }
+  },
+  {
     "repo": "neurocraft",
     "title": "NeuroCraft",
     "blurb": "Type 'a castle on that hill' and a castle shows up on the hill. You describe a 3D world and it builds it.",
@@ -52,13 +74,14 @@
       "chrome-extension"
     ],
     "created": "2026-09-22T13:53:25Z",
-    "pushed": "2026-09-22T13:53:56Z",
+    "pushed": "2026-09-23T23:10:40Z",
     "url": "https://github.com/duc-minh-droid/jevbrowser",
-    "live": null,
+    "live": "https://jevbrowser.vercel.app",
     "media": {
-      "kind": "image",
+      "kind": "video",
+      "video": "/projects/jevbrowser/demo.mp4",
       "poster": "/projects/jevbrowser/poster.png",
-      "alt": "A live Greenhouse application form with name, email, phone, location, pronouns, right-to-work and six demographic questions all filled in"
+      "alt": "The extension's side panel filling a job application (16 fields, then OVER TO YOU for the emailed verification code), then answering a five-question quiz and stopping at Submit answers"
     }
   },
   {
@@ -87,13 +110,14 @@
       "Python"
     ],
     "created": "2026-09-22T10:06:11Z",
-    "pushed": "2026-09-22T10:06:16Z",
+    "pushed": "2026-09-23T23:54:09Z",
     "url": "https://github.com/duc-minh-droid/backlot",
     "live": null,
     "media": {
-      "kind": "image",
+      "kind": "video",
+      "video": "/projects/backlot/demo.mp4",
       "poster": "/projects/backlot/poster.png",
-      "alt": "Backlot generating a shot"
+      "alt": "Backlot demo: build a cast member, compose a shot, watch the pipeline, make it night"
     }
   },
   {
