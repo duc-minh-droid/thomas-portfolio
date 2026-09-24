@@ -86,6 +86,7 @@ export type Club = {
   text: string;
   color: string;
   doodle: string;
+  tag?: string;
 };
 
 export const clubs: Club[] = [
@@ -128,6 +129,7 @@ export const clubs: Club[] = [
     text: "Co-founded LeadGreen. Ask me about it.",
     color: "var(--note-pink)",
     doodle: "plant",
+    tag: "uni",
   },
 ];
 
@@ -265,6 +267,12 @@ export const projectNotes: Record<string, string> = {
   JsonParser: "watch it parse",
   packetsio: "packets as particles",
   trippai: "when to go, not where",
+  "food-waste-management-website": "four days, four of us",
+  housr: "one weekend, two devs",
+  hacksw: "built in a day",
+  DataFrame: "pandas, but C++",
+  cardgame: "every player is a thread",
+  battleships: "first-year coursework, rebuilt",
 };
 
 // Sticker on projects less than a week old — a different one per project.
@@ -275,6 +283,15 @@ export const freshTags: Record<string, string> = {
   jevbrowser: "just shipped!",
   jevis: "new scribble!",
   backlot: "still drying!",
+};
+
+// Sticker for older projects that still earn a label: uni coursework, hackathons.
+export const projectKinds: Record<string, string> = {
+  battleships: "uni coursework",
+  cardgame: "uni coursework",
+  "food-waste-management-website": "hackathon",
+  housr: "hackathon",
+  hacksw: "hackathon",
 };
 
 // Margin doodle per project (falls back to "star").
@@ -297,4 +314,10 @@ export const projectDoodles: Record<string, string> = {
   JsonParser: "braces",
   packetsio: "arrows",
   trippai: "plane",
+  "food-waste-management-website": "plant",
+  housr: "chart",
+  hacksw: "burst",
+  DataFrame: "blocks",
+  cardgame: "card",
+  battleships: "grid",
 };

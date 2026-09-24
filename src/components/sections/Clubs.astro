@@ -31,7 +31,10 @@ import { clubs, education } from "../../content/portfolio";
                 <Doodle name="pin" size={40} fill={["var(--coral)", "var(--blue)", "var(--teal)", "var(--purple)"][i % 4]} sw={3.4} boil={false} seed={`pin-${i}`} />
               </span>
               <div class="club-head">
-                <h3 class="font-hand">{c.name}</h3>
+                <h3 class="font-hand">
+                  {c.name}
+                  {c.tag && <span class="club-tag font-hand">{c.tag}</span>}
+                </h3>
                 <Doodle name={c.doodle} size={46} sw={2.8} stroke="var(--ink)" draw seed={`club-${i}`} />
               </div>
               <p class="club-role font-mono">{c.role} · {c.start} – {c.end}</p>
@@ -104,7 +107,15 @@ import { clubs, education } from "../../content/portfolio";
   .grad { position: absolute; right: 0.6rem; top: -62px; width: 74px; rotate: 6deg; }
   .pin { position: absolute; top: -20px; left: 50%; translate: -50% 0; }
   .club-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-  .club-head h3 { font-size: 2.1rem; font-weight: 700; line-height: 1; }
+  .club-head h3 { font-size: 2.1rem; font-weight: 700; line-height: 1; display: flex; align-items: baseline; gap: 0.5rem; }
+  .club-tag {
+    font-size: 0.95rem;
+    padding: 0.05rem 0.45rem;
+    color: #fff;
+    background: var(--teal);
+    rotate: -4deg;
+    border-radius: 3px 8px 4px 9px;
+  }
   .club-role { margin-top: 0.3rem; font-size: 0.68rem; color: var(--graphite); }
   .club-text { margin-top: 0.7rem; font-size: 0.93rem; line-height: 1.5; color: #3e3a35; }
   .club-org { margin-top: 0.6rem; font-size: 1.2rem; color: var(--graphite); text-align: right; }

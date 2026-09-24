@@ -144,7 +144,6 @@
   {
     "repo": "slay-lc",
     "title": "slay-lc",
-    "hidden": true,
     "blurb": "",
     "tags": [
       "TypeScript"
@@ -156,7 +155,26 @@
     "media": {
       "kind": "none",
       "alt": "slay-lc demo"
-    }
+    },
+    "hidden": true
+  },
+  {
+    "repo": "packetsio-frontend",
+    "title": "packetsio-frontend",
+    "blurb": "",
+    "tags": [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "created": "2026-08-16T07:41:41Z",
+    "pushed": "2026-08-16T07:41:44Z",
+    "url": "https://github.com/duc-minh-droid/packetsio-frontend",
+    "live": null,
+    "media": {
+      "kind": "none",
+      "alt": "packetsio-frontend demo"
+    },
+    "hidden": true
   },
   {
     "repo": "packetsio",
@@ -254,6 +272,23 @@
     }
   },
   {
+    "repo": "cli-todo-app",
+    "title": "CLI Todo App",
+    "blurb": "A simple command-line todo application written in Rust. This is my first Rust project, built to practice basic Rust concepts such as file I/O, error propagation, collections, and command-line input handling.",
+    "tags": [
+      "Rust"
+    ],
+    "created": "2026-07-31T21:44:23Z",
+    "pushed": "2026-07-31T22:53:03Z",
+    "url": "https://github.com/duc-minh-droid/cli-todo-app",
+    "live": null,
+    "media": {
+      "kind": "none",
+      "alt": "cli-todo-app demo"
+    },
+    "hidden": true
+  },
+  {
     "repo": "stuff3d",
     "title": "Stuff3D",
     "blurb": "A 3D wireframe renderer in about 300 lines of C++. SFML opens the window and draws lines. The rotation, camera, clipping and perspective maths is all mine.",
@@ -311,6 +346,25 @@
     }
   },
   {
+    "repo": "DataFrame",
+    "title": "DataFrame",
+    "blurb": "A pandas-style DataFrame library in C++20: columnar storage, zero-copy views, group-by and hash join. The browser playground animates what every operation does.",
+    "tags": [
+      "JavaScript",
+      "C++"
+    ],
+    "created": "2026-01-04T16:03:59Z",
+    "pushed": "2026-09-24T13:06:01Z",
+    "url": "https://github.com/duc-minh-droid/DataFrame",
+    "live": "https://dataframe-wine.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/DataFrame/demo.mp4",
+      "poster": "/projects/DataFrame/poster.png",
+      "alt": "Playground demo: filter, select, sort, group-by and join on the sales dataset"
+    }
+  },
+  {
     "repo": "OrderBook",
     "title": "OrderBook",
     "blurb": "A limit order book and matching engine in C++17 with price-time priority, market orders, cancels, modifies and GTC/IOC/FOK. Every fill gets recorded so you can replay it in the browser.",
@@ -351,6 +405,25 @@
     }
   },
   {
+    "repo": "housr",
+    "title": "Financr",
+    "blurb": "A rental finance app for tenants and landlords: rent plans, bills, budgets, a rewards shop and an AI assistant that reads your own spending. Built over one hackathon weekend.",
+    "tags": [
+      "TypeScript",
+      "JavaScript"
+    ],
+    "created": "2025-11-08T21:23:19Z",
+    "pushed": "2026-09-24T13:10:25Z",
+    "url": "https://github.com/duc-minh-droid/housr",
+    "live": "https://housr.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/housr/demo.mp4",
+      "poster": "/projects/housr/poster.png",
+      "alt": "Demo: landing page, tenant dashboard, setting a budget, accepting a rent plan, redeeming a reward, asking the AI assistant"
+    }
+  },
+  {
     "repo": "trippai",
     "title": "TrippAI",
     "blurb": "Pick a city and it tells you which week of the next year to go. Prophet forecasts for weather, crowds and price, reweighted live on a month-by-month heatmap.",
@@ -368,6 +441,83 @@
       "video": "/projects/trippai/demo.mp4",
       "poster": "/projects/trippai/poster.png",
       "alt": "TrippAI demo"
+    }
+  },
+  {
+    "repo": "hacksw",
+    "title": "FireLine",
+    "blurb": "Seventy years of California wildfires on a satellite map. Start a fire anywhere and watch it spread with live weather, or ask a small neural net how a house would fare. Built in a day at HackSW.",
+    "tags": [
+      "Jupyter Notebook",
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2025-02-09T11:10:50Z",
+    "pushed": "2026-09-24T13:07:32Z",
+    "url": "https://github.com/duc-minh-droid/hacksw",
+    "live": "https://hacksw.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/hacksw/demo.mp4",
+      "poster": "/projects/hacksw/poster.png",
+      "alt": "FireLine demo"
+    }
+  },
+  {
+    "repo": "cardgame",
+    "title": "Card Game Threads",
+    "blurb": "A multithreaded card game in Java: every player is a thread passing cards round a ring of locked decks until someone holds four of a kind. The visualiser replays real runs.",
+    "tags": [
+      "Java",
+      "JavaScript"
+    ],
+    "created": "2024-10-26T14:44:12Z",
+    "pushed": "2026-09-24T12:53:50Z",
+    "url": "https://github.com/duc-minh-droid/cardgame",
+    "live": "https://cardgame-blush-seven.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/cardgame/demo.mp4",
+      "poster": "/projects/cardgame/poster.png",
+      "alt": "Replay of a 4-player game, then an 8-player game"
+    }
+  },
+  {
+    "repo": "battleships",
+    "title": "Battleships",
+    "blurb": "Battleships against three AIs in Python and Flask. Drag your fleet on, trade shots, watch ships sink. My first-year coursework, rebuilt properly in 2026.",
+    "tags": [
+      "Python",
+      "JavaScript"
+    ],
+    "created": "2023-12-14T14:47:12Z",
+    "pushed": "2026-09-24T12:52:15Z",
+    "url": "https://github.com/duc-minh-droid/battleships",
+    "live": "https://battleships-gold.vercel.app",
+    "media": {
+      "kind": "gif",
+      "gif": "/projects/battleships/demo.gif",
+      "poster": "/projects/battleships/poster.png",
+      "alt": "Placing ships and playing a few turns against the expert AI"
+    }
+  },
+  {
+    "repo": "food-waste-management-website",
+    "title": "WasteLess",
+    "blurb": "Track the food in your kitchen, catch it before it expires, and find recipes that use it up. Four of us built it in four days at a Google DevFest hackathon.",
+    "tags": [
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2023-12-05T20:14:06Z",
+    "pushed": "2026-09-24T14:35:38Z",
+    "url": "https://github.com/duc-minh-droid/food-waste-management-website",
+    "live": "https://food-waste-management-rho.vercel.app",
+    "media": {
+      "kind": "gif",
+      "gif": "/projects/food-waste-management-website/demo.gif",
+      "poster": "/projects/food-waste-management-website/poster.png",
+      "alt": "WasteLess demo"
     }
   }
 ]

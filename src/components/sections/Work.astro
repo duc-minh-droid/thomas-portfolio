@@ -4,7 +4,7 @@ import SketchBox from "../SketchBox.astro";
 import SectionTitle from "../SectionTitle.astro";
 import projectsRaw from "../../content/projects.json";
 import Character from "../Character.astro";
-import { projectDoodles, projectNotes, freshTags } from "../../content/portfolio";
+import { projectDoodles, projectNotes, freshTags, projectKinds } from "../../content/portfolio";
 import type { Acc, CharId, Expr } from "../../lib/characters";
 
 // band members peeking over a few cards, dressed for the project
@@ -63,6 +63,7 @@ const freshFallback = ["fresh ink!", "brand new!", "just landed!", "warm off the
           projects.map((p, i) => {
             const side = i % 2 === 0 ? "left" : "right";
             const fresh = now - new Date(p.created).getTime() < 8 * 864e5;
+            const sticker = fresh ? (freshTags[p.repo] ?? freshFallback[i % freshFallback.length]) : projectKinds[p.repo];
             const color = palette[i % palette.length];
             const rot = ((i * 37) % 5) - 2;
             const media = p.media;
@@ -107,7 +108,7 @@ const freshFallback = ["fresh ink!", "brand new!", "just landed!", "warm off the
                   <div class="body">
                     <h3 class="title font-hand">
                       {p.title}
-                      {fresh && <span class="fresh font-hand">{freshTags[p.repo] ?? freshFallback[i % freshFallback.length]}</span>}
+                      {sticker && <span class="fresh font-hand">{sticker}</span>}
                     </h3>
                     <p class="blurb">{p.blurb}</p>
                     <ul class="tags" aria-label="Tech">
