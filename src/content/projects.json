@@ -444,6 +444,25 @@
     }
   },
   {
+    "repo": "LeadGreen",
+    "title": "LeadGreen",
+    "blurb": "A sustainability game for campus: scan a QR code where you did something green, post a photo, earn points, grow a plant. Uni group project, team of nine. I built most of the plant game frontend.",
+    "tags": [
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2025-03-21T09:34:04Z",
+    "pushed": "2026-09-24T15:01:56Z",
+    "url": "https://github.com/duc-minh-droid/LeadGreen",
+    "live": "https://leadgreen.vercel.app",
+    "media": {
+      "kind": "video",
+      "video": "/projects/LeadGreen/demo.mp4",
+      "poster": "/projects/LeadGreen/poster.png",
+      "alt": "LeadGreen demo: scanning a QR, posting a photo, earning points, growing the plant"
+    }
+  },
+  {
     "repo": "hacksw",
     "title": "FireLine",
     "blurb": "Seventy years of California wildfires on a satellite map. Start a fire anywhere and watch it spread with live weather, or ask a small neural net how a house would fare. Built in a day at HackSW.",

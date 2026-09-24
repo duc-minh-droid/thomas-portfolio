@@ -23,6 +23,8 @@ const OUT_JSON = "src/content/projects.json";
 const PRESERVE = ["title", "blurb", "tags", "doodle", "hidden", "order"];
 // repos that aren't projects to show (this site itself)
 const SKIP = new Set(["thomas-portfolio"]);
+// repos to include even though the normal filter would drop them (forks)
+const INCLUDE = new Set(["LeadGreen"]);
 
 const gh = (path, raw = false) =>
   execFileSync("gh", ["api", path, ...(raw ? ["-H", "Accept: application/vnd.github.raw"] : [])], {
@@ -37,20 +39,22 @@ const VID_EXT = /\.(mp4|webm|mov)$/i;
 
 function readmeMedia(md) {
   const found = [];
-  const push = (url, alt = "") => {
+  const push = (url, alt = "", img = false) => {
     url = url.trim().replace(/^<|>$/g, "").split(/\s/)[0];
-    if (url && !found.some((f) => f.url === url)) found.push({ url, alt });
+    if (url && !found.some((f) => f.url === url)) found.push({ url, alt, img });
   };
-  for (const m of md.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) push(m[2], m[1]);
+  for (const m of md.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) push(m[2], m[1], true);
   for (const m of md.matchAll(/<img[^>]*?src=["']([^"']+)["'][^>]*>/gi)) {
     const alt = m[0].match(/alt="([^"]*)"|alt='([^']*)'/i);
-    push(m[1], alt?.[1] ?? alt?.[2] ?? "");
+    push(m[1], alt?.[1] ?? alt?.[2] ?? "", true);
   }
   for (const m of md.matchAll(/<(?:video|source)[^>]*?src=["']([^"']+)["']/gi)) push(m[1]);
   for (const m of md.matchAll(/<a[^>]*?href=["']([^"']+\.(?:mp4|webm|mov))["']/gi)) push(m[1]);
   for (const m of md.matchAll(/\]\(([^)\s]+\.(?:mp4|webm|mov))\)/gi)) push(m[1]);
   for (const m of md.matchAll(/`([^`\s]+\.(?:mp4|webm|mov))`/gi)) push(m[1]);
-  for (const m of md.matchAll(/https:\/\/github\.com\/user-attachments\/assets\/[a-z0-9-]+/gi)) push(m[0]);
+  for (const m of md.matchAll(/https:\/\/github\.com\/user-attachments\/assets\/[a-z0-9-]+/gi)) {
+    if (!found.some((f) => f.url === m[0])) push(m[0]);
+  }
   return found.filter((f) => !/badge|shields\.io|logo|\.svg(\?|$)/i.test(f.url));
 }
 
@@ -76,7 +80,7 @@ const existing = existsSync(OUT_JSON) ? JSON.parse(readFileSync(OUT_JSON, "utf8"
 const prev = Object.fromEntries(existing.map((p) => [p.repo, p]));
 
 const repos = ghJson(`users/${USER}/repos?per_page=100&sort=pushed&type=owner`).filter(
-  (r) => !r.fork && !r.private && !SKIP.has(r.name) && r.pushed_at >= SINCE,
+  (r) => !r.private && !SKIP.has(r.name) && (!r.fork || INCLUDE.has(r.name)) && r.pushed_at >= SINCE,
 );
 
 const projects = [];
@@ -93,7 +97,9 @@ for (const r of repos) {
   const abs = (u) => (/^https?:/.test(u) ? u : base + u.replace(/^\.?\//, ""));
 
   const media = readmeMedia(md);
-  const video = media.find((m) => VID_EXT.test(m.url)) ?? media.find((m) => /user-attachments/.test(m.url));
+  // user-attachments URLs can be images too (pasted as ![](url)) — only treat
+  // non-image ones as possible videos
+  const video = media.find((m) => VID_EXT.test(m.url)) ?? media.find((m) => /user-attachments/.test(m.url) && !m.img);
   const gif = media.find((m) => /\.gif$/i.test(m.url) && /demo|solve|play|viewer/i.test(m.url)) ??
     media.find((m) => /\.gif$/i.test(m.url));
   const stills = media.filter((m) => IMG_EXT.test(m.url) && !/\.gif$/i.test(m.url));

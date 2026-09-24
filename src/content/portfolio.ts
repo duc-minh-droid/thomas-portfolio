@@ -273,6 +273,7 @@ export const projectNotes: Record<string, string> = {
   DataFrame: "pandas, but C++",
   cardgame: "every player is a thread",
   battleships: "first-year coursework, rebuilt",
+  LeadGreen: "team of nine; I did the plant game",
 };
 
 // Sticker on projects less than a week old — a different one per project.
@@ -289,9 +290,11 @@ export const freshTags: Record<string, string> = {
 export const projectKinds: Record<string, string> = {
   battleships: "uni coursework",
   cardgame: "uni coursework",
+  LeadGreen: "uni coursework",
   "food-waste-management-website": "hackathon",
   housr: "hackathon",
   hacksw: "hackathon",
+  trippai: "hackathon",
 };
 
 // Margin doodle per project (falls back to "star").
@@ -320,4 +323,5 @@ export const projectDoodles: Record<string, string> = {
   DataFrame: "blocks",
   cardgame: "card",
   battleships: "grid",
+  LeadGreen: "plant",
 };
