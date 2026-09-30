@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import AgentLayer from "../components/AgentLayer.astro";
 import { profile } from "../content/portfolio";
 
 interface Props {
@@ -60,6 +61,8 @@ const {
       <div class="notebook-edge" aria-hidden="true"></div>
       <slot />
     </div>
+
+    <AgentLayer />
 
     <script>
       import "../scripts/main";

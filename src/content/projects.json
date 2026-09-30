@@ -1,5 +1,23 @@
 [
   {
+    "repo": "cslingo",
+    "title": "cslingo",
+    "blurb": "Computer science, one bite at a time. Duolingo-style lessons, live demos and boss quizzes. Runs in your browser.",
+    "tags": [
+      "JavaScript",
+      "Python"
+    ],
+    "created": "2026-09-27T21:39:59Z",
+    "pushed": "2026-09-30T22:14:29Z",
+    "url": "https://github.com/duc-minh-droid/cslingo",
+    "live": "https://duc-minh-droid.github.io/cslingo/",
+    "media": {
+      "kind": "video",
+      "video": "/projects/cslingo/demo.webm",
+      "alt": "CSLingo trailer"
+    }
+  },
+  {
     "repo": "jevbox",
     "title": "jevbox",
     "blurb": "A 3D boxing game where Jev calls every shot live. Pick two fighters Street Fighter-style, hit FIGHT, and watch them go at it.",
