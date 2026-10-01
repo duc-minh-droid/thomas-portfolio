@@ -107,9 +107,10 @@ const freshFallback = ["fresh ink!", "brand new!", "just landed!", "warm off the
 
                   <div class="body">
                     <h3 class="title font-hand">
-                      {p.title}
+                      <span class="title-text rf-text">{p.title}</span>
                       {sticker && <span class="fresh font-hand">{sticker}</span>}
                     </h3>
+                    <p class="repo rf-type font-mono">duc-minh-droid/{p.repo} · {month(p.created)}</p>
                     <p class="blurb">{p.blurb}</p>
                     <ul class="tags" aria-label="Tech">
                       {p.tags.slice(0, 4).map((t) => (
@@ -275,8 +276,9 @@ const freshFallback = ["fresh ink!", "brand new!", "just landed!", "warm off the
     rotate: -4deg;
     border-radius: 3px 8px 4px 9px;
   }
+  .repo { margin-top: 0.45rem; font-size: 0.72rem; letter-spacing: 0.02em; color: var(--pencil); }
   .blurb {
-    margin-top: 0.55rem;
+    margin-top: 0.4rem;
     font-size: 0.98rem;
     line-height: 1.55;
     color: var(--graphite);
