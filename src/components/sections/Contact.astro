@@ -2,6 +2,7 @@
 import Doodle from "../Doodle.astro";
 import SketchBox from "../SketchBox.astro";
 import Character from "../Character.astro";
+import BugHunt from "../BugHunt.astro";
 import { profile } from "../../content/portfolio";
 import { siGithub, siX } from "simple-icons";
 
@@ -19,9 +20,8 @@ const iconPath: Record<string, string> = { github: siGithub.path, x: siX.path, l
     </h2>
 
     <div class="contact-grid">
-      <div class="envelope-wrap" data-reveal>
-        <Doodle name="envelope" size="100%" fill="var(--mustard)" sw={1.1} roughness={1.5} draw seed="env" class="envelope" />
-        <span class="env-critter" aria-hidden="true"><Character id="grok" mini expr="love" acc={["heart"]} size="100%" draw /></span>
+      <div class="hunt-wrap" data-reveal>
+        <BugHunt />
         <div class="plane" data-plane aria-hidden="true">
           <Doodle name="plane" size={72} fill="var(--note-blue)" sw={2.4} boil={false} seed="plane" />
         </div>
@@ -107,13 +107,12 @@ const iconPath: Record<string, string> = { github: siGithub.path, x: siX.path, l
 
   .contact-grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: clamp(2rem, 5vw, 5rem);
     align-items: center;
     margin-top: clamp(2rem, 5vw, 3.5rem);
   }
-  .envelope-wrap { position: relative; max-width: 360px; rotate: -6deg; }
-  .env-critter { position: absolute; right: -14%; top: -28%; width: 34%; rotate: 10deg; }
+  .hunt-wrap { position: relative; max-width: 620px; rotate: -1.2deg; }
   .plane { position: absolute; left: 40%; top: 20%; opacity: 0; pointer-events: none; z-index: 30; }
   .lead { font-size: 1.1rem; line-height: 1.6; color: var(--graphite); max-width: 34rem; }
   .email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.4rem; }
@@ -179,7 +178,7 @@ const iconPath: Record<string, string> = { github: siGithub.path, x: siX.path, l
 
   @media (max-width: 860px) {
     .contact-grid { grid-template-columns: 1fr; }
-    .envelope-wrap { max-width: 220px; }
+    .hunt-wrap { max-width: none; }
     .sig-heart { right: -1rem; bottom: -2.4rem; }
   }
 </style>

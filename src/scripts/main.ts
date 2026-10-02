@@ -3,6 +3,7 @@ import { annotate } from "rough-notation";
 import { gsap, ScrollTrigger, $, $$, root, motion, drawIn, revealOnScroll, cssColor, safe } from "./core";
 import { initHero } from "./hero";
 import { initRefine } from "./refine";
+import { initBugHunt } from "./bughunt";
 import { initTimeline } from "./timeline";
 import { initMindmap } from "./mindmap";
 import { initPad } from "./pad";
@@ -195,6 +196,7 @@ safe("timeline", initTimeline);
 safe("mindmap", initMindmap);
 safe("pad", initPad);
 safe("contact", initContact);
+safe("bughunt", initBugHunt);
 safe("band", initBand);
 safe("claude", initClaude);
 

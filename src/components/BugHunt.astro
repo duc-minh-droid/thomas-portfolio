@@ -1,0 +1,405 @@
+---
+// A code review that hunts its own bugs: a magnifier scans the code, zooms in on three bugs,
+// then a hammer squashes two of them. Scene logic lives in src/scripts/bughunt.ts.
+type Tok = [text: string, cls?: string, mark?: string];
+
+const lines: Tok[][] = [
+  [["import", "k"], [" { "], ["runTool", "f"], [", "], ["plan", "f"], [" } "], ["from", "k"], [" "], ['"./tools"', "s", "m1"], [";"]],
+  [],
+  [["export", "k"], [" "], ["async function", "k"], [" "], ["agentLoop", "d"], ["({ "], ["goal", "p"], [", "], ["tools", "p"], [", "], ["maxSteps", "p", "m2"], [" }: "], ["LoopProps", "t"], [") {"]],
+  [["  "], ["const", "k"], [" log = [];"]],
+  [["  "], ["let", "k"], [" steps = "], ["0", "n"], [";"]],
+  [["  "], ["while", "k"], [" (steps "], ["<=", "o", "b1"], [" maxSteps) {"]],
+  [["    "], ["const", "k"], [" action = "], ["await", "k", "m3"], [" "], ["plan", "f"], ["(goal, log);"]],
+  [["    "], ["if", "k"], [" (action.type === "], ['"done"', "s"], [") "], ["return", "k"], [" log;"]],
+  [["    "], ["const", "k"], [" result = "], ["runTool", "f", "b2"], ["(tools, action);"]],
+  [["    log.push(result);"]],
+  [["    steps++;"]],
+  [["  }"]],
+  [["  "], ["return", "k"], [" "], ["retry", "f", "b3"], ["(log);"]],
+  [["}"]],
+];
+
+const finds = [
+  { sev: "High", line: 6, msg: "`<=` runs one step more than maxSteps" },
+  { sev: "Medium", line: 9, msg: "runTool isn't awaited, so failures vanish" },
+  { sev: "Low", line: 13, msg: "retry has no cap and can loop forever" },
+];
+
+// little bugs: [shell, shell-dark, mark colour, legs]
+const bug = (shell: string, shade: string, dark: string, spots: boolean) => `
+<svg viewBox="-20 -22 40 42" aria-hidden="true">
+  <g class="legs" stroke="${dark}" stroke-width="1.5" stroke-linecap="round" fill="none">
+    <path d="M-7 -4L-15 -9M-8 1L-17 1M-7 6L-15 11M7 -4L15 -9M8 1L17 1M7 6L15 11"/>
+    <path d="M-2 -13L-6 -20M2 -13L6 -20"/>
+  </g>
+  <circle cx="0" cy="-10" r="4.4" fill="${dark}"/>
+  <ellipse cx="0" cy="2" rx="9.6" ry="12" fill="${shell}"/>
+  <path d="M0 -9.5V14" stroke="${dark}" stroke-width="1.3" fill="none"/>
+  ${spots ? `<circle cx="-4.6" cy="-1" r="1.9" fill="${dark}"/><circle cx="4.6" cy="-1" r="1.9" fill="${dark}"/><circle cx="-4" cy="7" r="1.6" fill="${dark}"/><circle cx="4" cy="7" r="1.6" fill="${dark}"/>` : ""}
+  <ellipse cx="-3.6" cy="-4" rx="2.6" ry="4.4" fill="#fff" opacity=".42" transform="rotate(14 -3.6 -4)"/>
+  <ellipse cx="0" cy="2" rx="9.6" ry="12" fill="none" stroke="${shade}" stroke-width="1"/>
+</svg>`;
+const bugs = [bug("#e5383b", "#8c1d20", "#1a1210", true), bug("#f4b73a", "#a86a0c", "#2a1b0a", true), bug("#b9c4d0", "#6b7886", "#1c2127", false)];
+---
+
+<div class="bughunt" data-bughunt>
+  <span class="tape" style="top:-13px;left:12%;rotate:-5deg;width:84px;height:24px" aria-hidden="true"></span>
+  <span class="tape" style="top:-12px;right:10%;rotate:4deg;width:70px;height:22px" aria-hidden="true"></span>
+
+  <div class="bh-head" aria-hidden="true">
+    <span class="bh-file"><i></i>agent-loop.ts</span>
+    <span class="bh-path">src/agent/</span>
+    <span class="bh-meta">added <b>+14</b></span>
+    <span class="bh-rev">Reviewed <i class="bh-box"></i></span>
+  </div>
+
+  <div class="bh-stage" aria-hidden="true">
+    <div class="bh-world">
+      {
+        lines.map((toks, i) => (
+          <div class="ln">
+            <i class="no">{i + 1}</i>
+            <span class="tx">
+              {toks.map(([t, c, m]) => (
+                <span class={c ? `t-${c}` : undefined} data-m={m}>
+                  {t}
+                </span>
+              ))}
+            </span>
+          </div>
+        ))
+      }
+      {bugs.map((svg, i) => <span class="bug" data-bug={i + 1} set:html={svg} />)}
+    </div>
+
+    <svg class="bh-lines"></svg>
+    <div class="bh-tags">
+      {
+        finds.map((f) => (
+          <span class={`bh-tag sev-${f.sev.toLowerCase()}`}>
+            <b>{f.sev}</b>
+            <span>agent-loop.ts:{f.line}</span>
+          </span>
+        ))
+      }
+    </div>
+
+    <div class="bh-lens">
+      <div class="bh-lens-view"></div>
+      <i class="bh-glass"></i>
+      <i class="bh-ring"></i>
+      <i class="bh-handle"></i>
+    </div>
+
+    <div class="bh-hammer">
+      <svg viewBox="0 0 150 54" aria-hidden="true">
+        <defs>
+          <linearGradient id="bh-head" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e3e7ec" />
+            <stop offset="0.5" stop-color="#aeb5bf" />
+            <stop offset="1" stop-color="#6f7782" />
+          </linearGradient>
+        </defs>
+        <rect x="58" y="22" width="90" height="10" rx="5" fill="#2fb5ab" />
+        <path d="M70 22h6v10h-6zM88 22h6v10h-6zM106 22h6v10h-6z" fill="#1f8f87" opacity=".75" />
+        <rect x="6" y="6" width="62" height="42" rx="9" fill="url(#bh-head)" />
+        <rect x="14" y="6" width="9" height="42" fill="#2fb5ab" />
+        <rect x="14" y="6" width="9" height="42" fill="#fff" opacity=".18" />
+        <rect x="10" y="9" width="54" height="7" rx="3.5" fill="#fff" opacity=".35" />
+      </svg>
+    </div>
+
+    <div class="bh-fx"></div>
+    <i class="bh-flash"></i>
+  </div>
+
+  <div class="bh-review">
+    <div class="rv-top">
+      <p class="rv-title" data-rv-title>Reviewing the latest changes</p>
+      <p class="rv-sub font-mono" data-rv-sub>scanning…</p>
+    </div>
+    <ul class="rv-list">
+      {
+        finds.map((f) => (
+          <li class={`rv-row sev-${f.sev.toLowerCase()}`}>
+            <b>{f.sev}</b>
+            <span class="msg">{f.msg}</span>
+            <small class="font-mono">agent-loop.ts · line {f.line}</small>
+            <em>resolved</em>
+          </li>
+        ))
+      }
+    </ul>
+    <button class="rv-rerun" type="button" data-rerun>Rerun review</button>
+  </div>
+</div>
+
+<style is:global>
+  .bughunt {
+    --bh-bg: #0d0f12;
+    --bh-panel: #13161a;
+    --bh-line: #242a31;
+    --bh-text: #e9ebee;
+    --bh-dim: #7d8590;
+    --bh-high: #ff3b6b;
+    --bh-med: #f5d63c;
+    --bh-low: #4aa8ff;
+    position: relative;
+    container-type: inline-size;
+    width: 100%;
+    color: var(--bh-text);
+    background: var(--bh-bg);
+    border: 1.5px solid #000;
+    border-radius: 10px;
+    box-shadow: 0 22px 36px -22px rgb(30 20 5 / 0.55), 6px 8px 0 rgb(0 0 0 / 0.1);
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 2.3cqi, 12.5px);
+  }
+  .bughunt .tape { z-index: 6; }
+
+  .bh-head {
+    display: flex;
+    align-items: center;
+    gap: 0.9em;
+    padding: 0.8em 1em;
+    border-bottom: 1px solid var(--bh-line);
+    font-family: var(--font-body);
+    font-size: 0.95em;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .bh-file { display: inline-flex; align-items: center; gap: 0.5em; font-weight: 700; }
+  .bh-file i { width: 1.05em; height: 1.05em; border-radius: 3px; background: linear-gradient(135deg, #4aa8ff, #7f6bff); }
+  .bh-path { color: var(--bh-dim); }
+  .bh-meta { margin-left: auto; color: var(--bh-dim); }
+  .bh-meta b { color: #3ad07f; font-weight: 600; }
+  .bh-rev { display: inline-flex; align-items: center; gap: 0.5em; color: var(--bh-dim); }
+  .bh-box { width: 1.1em; height: 1.1em; border: 1.5px solid #3a4048; border-radius: 3px; }
+
+  .bh-stage { position: relative; overflow: hidden; background: var(--bh-bg); }
+  .bh-world { position: relative; padding: 0.9em 0 1em; user-select: none; }
+  .bh-world::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #3ad07f;
+    opacity: 0.85;
+  }
+  .bh-world .ln { display: flex; align-items: baseline; height: 1.78em; }
+  .bh-world .no { flex: 0 0 3em; padding-right: 1.1em; text-align: right; font-style: normal; color: #4a5058; }
+  .bh-world .tx { white-space: pre; }
+  .bh-world .tx > span { border-radius: 2px; transition: background-color 0.25s, box-shadow 0.25s, color 0.25s; }
+  .bh-world .t-k { color: #ff7a90; }
+  .bh-world .t-f { color: #8fd0ff; }
+  .bh-world .t-d { color: #c39bff; }
+  .bh-world .t-p { color: #f4b568; }
+  .bh-world .t-s { color: #f1c58d; }
+  .bh-world .t-t { color: #5fd9c9; }
+  .bh-world .t-n { color: #8fd0ff; }
+  .bh-world .t-o { color: #ff7a90; }
+  .bh-world .tx > span.box-yellow { box-shadow: 0 0 0 1px #f2d84a; }
+  .bh-world .tx > span.box-green { box-shadow: 0 0 0 1px #b5e83a; }
+  .bh-world .tx > span.box-cyan { box-shadow: 0 0 0 1px #28d7ff; }
+  .bh-world .tx > span.fill-magenta { background: #ff2fc4; color: #fff; box-shadow: 0 0 0 2px #ff2fc4; }
+  .bh-world .tx > span.fill-cyan { background: #28d7ff; color: #06161c; box-shadow: 0 0 0 2px #28d7ff; }
+
+  .bh-world .bug {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.7em;
+    height: 2.85em;
+    margin: -1.42em 0 0 -1.35em;
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0.25em 0.3em rgb(0 0 0 / 0.5));
+    will-change: transform;
+  }
+  .bh-world .bug svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .bh-world .bug .legs { transform-origin: 50% 55%; animation: bh-legs 0.22s steps(2) infinite; }
+  @keyframes bh-legs { 50% { transform: rotate(7deg) scale(1.04); } }
+
+  .bh-lines { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .bh-lines path { fill: none; stroke-width: 1.4; stroke-linecap: round; }
+
+  .bh-tags { position: absolute; inset: 0; pointer-events: none; }
+  .bh-tag {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-flex;
+    gap: 0.55em;
+    padding: 0.38em 0.7em 0.42em;
+    border-radius: 0.4em;
+    font-family: var(--font-body);
+    font-size: 0.95em;
+    white-space: nowrap;
+    opacity: 0;
+    box-shadow: 0 6px 16px -6px rgb(0 0 0 / 0.7);
+  }
+  .bh-tag b { font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+  .bh-tag span { opacity: 0.78; }
+  .bh-tag.sev-high { background: var(--bh-high); color: #fff; }
+  .bh-tag.sev-medium { background: var(--bh-med); color: #231d02; }
+  .bh-tag.sev-low { background: var(--bh-low); color: #04182b; }
+
+  /* the magnifier: contents are a live, scaled copy of the code */
+  .bh-lens {
+    --d: 88px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--d);
+    height: var(--d);
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .bh-lens-view { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; background: #0b0d10; }
+  .bh-lens-view .bh-world { position: absolute; left: 0; top: 0; transform-origin: 0 0; padding-top: 0.9em; }
+  .bh-glass {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 24%, rgb(255 255 255 / 0.28), transparent 38%),
+      radial-gradient(circle, transparent 58%, rgb(0 0 0 / 0.5) 100%);
+    box-shadow: inset 0 0 18px rgb(0 0 0 / 0.55);
+  }
+  .bh-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 6px solid transparent;
+    background:
+      linear-gradient(#0b0d10, #0b0d10) padding-box,
+      linear-gradient(140deg, #ffffff, #9fe6df 38%, #1c2b31 66%, #d7edf0) border-box;
+    -webkit-mask: radial-gradient(circle, transparent calc(50% - 6px), #000 calc(50% - 5px));
+    mask: radial-gradient(circle, transparent calc(50% - 6px), #000 calc(50% - 5px));
+    box-shadow: 0 6px 14px rgb(0 0 0 / 0.55);
+  }
+  .bh-handle {
+    position: absolute;
+    left: calc(50% + var(--d) * 0.34);
+    top: calc(50% + var(--d) * 0.34);
+    width: calc(var(--d) * 0.5);
+    height: calc(var(--d) * 0.1);
+    margin-top: calc(var(--d) * -0.05);
+    border-radius: 999px;
+    transform-origin: 0 50%;
+    rotate: 45deg;
+    background: linear-gradient(90deg, #2fb5ab 0 14%, #2a3338 14% 100%);
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.5);
+  }
+
+  .bh-hammer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120px;
+    opacity: 0;
+    pointer-events: none;
+    transform-origin: 100% 50%;
+    filter: drop-shadow(0 8px 8px rgb(0 0 0 / 0.55));
+    will-change: transform;
+  }
+  .bh-hammer svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .bh-fx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .bh-ring-fx {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border: 2px solid rgb(255 255 255 / 0.85);
+    border-radius: 50%;
+    animation: bh-ring 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes bh-ring { to { transform: scale(13); opacity: 0; border-width: 0.5px; } }
+  .bh-dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    border-radius: 50%;
+    animation: bh-dot 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  }
+  @keyframes bh-dot { to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+  .bh-flash { position: absolute; inset: 0; background: #cfd6de; opacity: 0; pointer-events: none; mix-blend-mode: screen; }
+
+  /* the hit: RGB split, tearing and a grey flash */
+  .bh-stage.is-glitch .bh-world { animation: bh-glitch 0.4s steps(1) both; }
+  .bh-stage.is-glitch .bh-flash { animation: bh-flash 0.4s linear both; }
+  @keyframes bh-glitch {
+    0% { transform: translate(-7px, 0) skewX(-5deg); text-shadow: 3px 0 #ff2d6f, -3px 0 #19e3ff; filter: contrast(1.5) brightness(1.5); clip-path: inset(0 0 62% 0); }
+    16% { transform: translate(8px, 1px) skewX(4deg); text-shadow: -3px 0 #ff2d6f, 3px 0 #19e3ff; clip-path: inset(34% 0 24% 0); }
+    32% { transform: translate(-4px, -1px); text-shadow: 2px 0 #ff2d6f, -2px 0 #19e3ff; clip-path: inset(0 0 0 0); filter: contrast(1.3) brightness(1.3); }
+    50% { transform: translate(5px, 0) skewX(-3deg); clip-path: inset(58% 0 0 0); }
+    68% { transform: translate(-2px, 0); text-shadow: 1px 0 #ff2d6f, -1px 0 #19e3ff; clip-path: inset(0 0 0 0); filter: none; }
+    100% { transform: none; text-shadow: none; clip-path: none; filter: none; }
+  }
+  @keyframes bh-flash { 0% { opacity: 0.4; } 100% { opacity: 0; } }
+
+  .bh-review { padding: 0.9em 1em 1em; border-top: 1px solid var(--bh-line); background: var(--bh-panel); font-family: var(--font-body); }
+  .rv-top { display: flex; align-items: baseline; justify-content: space-between; gap: 1em; }
+  .rv-title { font-size: 1.05em; font-weight: 700; }
+  .rv-sub { font-size: 0.85em; color: var(--bh-dim); white-space: nowrap; }
+  .rv-list { display: grid; gap: 0.45em; margin: 0.8em 0 0; padding: 0; list-style: none; }
+  .rv-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 5.4em 1fr auto;
+    align-items: baseline;
+    gap: 0.2em 0.8em;
+    padding: 0.5em 0.7em;
+    border-radius: 0.5em;
+    background: rgb(255 255 255 / 0.03);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .rv-row.on { opacity: 1; transform: none; }
+  .rv-row b { font-weight: 800; }
+  .rv-row.sev-high b { color: var(--bh-high); }
+  .rv-row.sev-medium b { color: var(--bh-med); }
+  .rv-row.sev-low b { color: var(--bh-low); }
+  .rv-row .msg { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rv-row small { grid-column: 2 / 4; font-size: 0.82em; color: var(--bh-dim); }
+  .rv-row em {
+    grid-row: 1;
+    grid-column: 3;
+    padding: 0.1em 0.55em;
+    border-radius: 999px;
+    background: rgb(58 208 127 / 0.16);
+    color: #3ad07f;
+    font-size: 0.82em;
+    font-style: normal;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .rv-row.done .msg { color: var(--bh-dim); text-decoration: line-through; text-decoration-color: rgb(125 133 144 / 0.6); }
+  .rv-row.done em { opacity: 1; }
+  .rv-rerun {
+    display: block;
+    width: 100%;
+    margin-top: 0.9em;
+    padding: 0.6em 1em;
+    border: 1px solid var(--bh-line);
+    border-radius: 0.55em;
+    background: transparent;
+    color: var(--bh-text);
+    font: inherit;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .rv-rerun:hover { background: rgb(255 255 255 / 0.06); border-color: #3a4048; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bh-world .bug .legs { animation: none; }
+  }
+</style>

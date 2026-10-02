@@ -39,7 +39,6 @@ const {
         // the page opens with the name being written; start at the top unless a #section was asked for
         if ("scrollRestoration" in history && !location.hash) history.scrollRestoration = "manual";
         if (!matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("motion");
-        if (matchMedia("(hover: hover) and (pointer: fine)").matches) d.classList.add("pencil-cursor");
         // safety net: never leave content hidden if the animation bundle fails to boot
         setTimeout(function () { if (!d.classList.contains("booted")) d.classList.remove("motion"); }, 4000);
       })();
