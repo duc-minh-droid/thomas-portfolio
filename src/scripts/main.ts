@@ -4,6 +4,7 @@ import { gsap, ScrollTrigger, $, $$, root, motion, drawIn, revealOnScroll, cssCo
 import { initHero } from "./hero";
 import { initRefine } from "./refine";
 import { initBugHunt } from "./bughunt";
+import { initStickers } from "./stickers";
 import { initTimeline } from "./timeline";
 import { initMindmap } from "./mindmap";
 import { initPad } from "./pad";
@@ -197,6 +198,7 @@ safe("mindmap", initMindmap);
 safe("pad", initPad);
 safe("contact", initContact);
 safe("bughunt", initBugHunt);
+safe("stickers", initStickers);
 safe("band", initBand);
 safe("claude", initClaude);
 

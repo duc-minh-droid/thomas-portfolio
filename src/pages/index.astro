@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Doodle from "../components/Doodle.astro";
 import Character from "../components/Character.astro";
+import Sticker from "../components/Sticker.astro";
 import type { Acc, CharId, Expr } from "../lib/characters";
 import Hero from "../components/sections/Hero.astro";
 import Work from "../components/sections/Work.astro";
@@ -29,6 +30,23 @@ const critters: { id: CharId; expr?: Expr; acc?: Acc[]; top: number; side: strin
   { id: "codex", expr: "wink", top: 54, side: "right", size: 60, speed: 0.4, rotate: -8 },
   { id: "openclaw", expr: "grin", acc: ["balloon"], top: 68, side: "left", size: 60, speed: 0.3, rotate: 7 },
   { id: "grok", expr: "love", acc: ["heart"], top: 79, side: "right", size: 56, speed: 0.35, rotate: -6 },
+];
+
+// die-cut paper stickers about me, slapped on the margins
+const stickers = [
+  { kind: "bus", top: 9, side: "left", size: 96, rotate: -8, speed: 0.2 },
+  { kind: "exeter", top: 12, side: "right", size: 88, rotate: 7, speed: 0.3 },
+  { kind: "candles", top: 31, side: "left", size: 86, rotate: 6, speed: 0.25 },
+  { kind: "claude", top: 35, side: "right", size: 84, rotate: -6, speed: 0.35 },
+  { kind: "rust", top: 47, side: "left", size: 74, rotate: -10, speed: 0.3 },
+  { kind: "coffee", top: 59, side: "right", size: 78, rotate: 9, speed: 0.2 },
+  { kind: "git", top: 63, side: "left", size: 92, rotate: 5, speed: 0.35 },
+  { kind: "robot", top: 72, side: "right", size: 80, rotate: -7, speed: 0.25 },
+  { kind: "medal", top: 76, side: "left", size: 86, rotate: -5, speed: 0.3 },
+  { kind: "python", top: 85, side: "right", size: 70, rotate: 10, speed: 0.3 },
+  { kind: "headphones", top: 89, side: "left", size: 82, rotate: 8, speed: 0.2 },
+  { kind: "moon", top: 94, side: "right", size: 78, rotate: -9, speed: 0.25 },
+  { kind: "ts", top: 20, side: "left", size: 66, rotate: 9, speed: 0.4 },
 ];
 ---
 
@@ -59,6 +77,13 @@ const critters: { id: CharId; expr?: Expr; acc?: Acc[]; top: number; side: strin
           </div>
         ))
       }
+      {
+        stickers.map((k) => (
+          <div class="md sticker-slot" style={`top:${k.top}%;${k.side}:${k.side === "left" ? "clamp(0.3rem, 1.1vw, 1.2rem)" : "clamp(3.4rem, 5.2vw, 5.6rem)"}`}>
+            <Sticker {...k} />
+          </div>
+        ))
+      }
     </div>
     <Hero />
     <Work />
@@ -76,7 +101,13 @@ const critters: { id: CharId; expr?: Expr; acc?: Acc[]; top: number; side: strin
   main { position: relative; }
   .margin-doodles { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
   .md { position: absolute; opacity: 0.85; }
-  @media (max-width: 1100px) { .margin-doodles { display: none; } }
+  /* small screens: the doodles and critters step aside, the stickers stay and peek in from the page edges */
+  @media (max-width: 1100px) {
+    .margin-doodles { overflow: hidden; }
+    .margin-doodles .md:not(:global(.sticker-slot)) { display: none; }
+    .margin-doodles :global(.sticker-slot[style*="left:"]) { left: -1.5rem !important; }
+    .margin-doodles :global(.sticker-slot[style*="right:"]) { right: -1.5rem !important; }
+  }
   .pad {
     position: absolute;
     inset: 0;
